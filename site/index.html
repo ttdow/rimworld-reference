@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="A quick RimWorld reference for apparel and textiles. Search and sort armor, insulation, crafting, and material data.">
+    <title>Apparel & Textiles · RimWorld Field Notes</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    <link rel="stylesheet" href="./assets/styles.css">
+    <script src="./assets/data.js" defer></script>
+    <script src="./assets/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#reference">Skip to reference tables</a>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="icon-planet" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M4.1 13.8c-2.1-.1-3.2-.6-3.2-1.4 0-1.6 5-3.4 11.1-4s11.1.2 11.1 1.8c0 .8-1.2 1.7-3.3 2.5M5.3 14.9c2 .1 4.3 0 6.7-.2 2.7-.3 5.2-.8 7.1-1.3"/></symbol>
+      <symbol id="icon-shirt" viewBox="0 0 24 24"><path d="m8 3-6 4 3 5 3-2v11h8V10l3 2 3-5-6-4c-1 3-7 3-8 0Z"/></symbol>
+      <symbol id="icon-textile" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM3 7h18M3 12h18M3 17h18M10 3v18M14 3v18"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+      <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.8 13.5A9 9 0 0 1 10.5 3.2a9 9 0 1 0 10.3 10.3Z"/></symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    </svg>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="RimWorld Field Notes home">
+        <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#icon-planet"/></svg></span>
+        <span><strong>RIMWORLD</strong><span class="brand-subtitle">FIELD NOTES</span></span>
+      </a>
+      <div class="header-actions">
+        <a href="#source-notes" class="source-link">About the data</a>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch to light theme"><svg class="icon" aria-hidden="true"><use href="#icon-sun"/></svg></button>
+      </div>
+    </header>
+
+    <main id="reference">
+      <section class="page-intro" aria-labelledby="page-title">
+        <p class="eyebrow">THE COLONY REFERENCE</p>
+        <h1 id="page-title">Apparel &amp; textiles<span class="title-period">.</span></h1>
+        <p class="intro-copy">Armor, insulation, and crafting details, one lookup away.</p>
+        <div class="intro-index" aria-label="Reference contents"><span><strong id="apparel-total">59</strong> apparel</span><span class="index-divider"></span><span><strong id="textiles-total">38</strong> textiles</span><span class="index-divider"></span><span>From your spreadsheets</span></div>
+      </section>
+
+      <nav class="dataset-nav" aria-label="Reference tables">
+        <button class="dataset-button active" type="button" data-dataset="apparel" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#icon-shirt"/></svg>Apparel<span class="dataset-count" id="apparel-count">59</span></button>
+        <button class="dataset-button" type="button" data-dataset="textiles" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-textile"/></svg>Textiles<span class="dataset-count" id="textiles-count">38</span></button>
+      </nav>
+
+      <section class="reference-panel" aria-labelledby="table-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow" id="table-eyebrow">EQUIPMENT</p><h2 id="table-title">Apparel</h2><p class="panel-description" id="table-description">Find the right layers for your colonists.</p></div>
+          <button class="text-button export-button" id="export-csv" type="button"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>Export CSV</button>
+        </div>
+
+        <div class="filter-toolbar">
+          <label class="search-box"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><span class="sr-only">Search all fields in the current table</span><input id="search" type="search" placeholder="Search apparel, materials, research…" autocomplete="off" spellcheck="false"><kbd aria-hidden="true">/</kbd></label>
+          <label class="category-filter"><span id="category-label">Layer</span><select id="category" aria-labelledby="category-label"><option value="">All layers</option></select></label>
+          <button class="reset-button" id="reset-filters" type="button" disabled>Reset</button>
+        </div>
+
+        <div class="view-toolbar"><div class="column-views" id="column-views" role="group" aria-label="Column views"></div><span class="result-count" id="result-count" role="status" aria-live="polite"></span></div>
+
+        <div class="table-scroll" id="table-scroll" role="region" aria-label="Apparel table; scroll for more columns" tabindex="0">
+          <table id="reference-table"><caption class="sr-only" id="table-caption">Apparel from Apparel.xlsx. Select a column heading to sort or an item name to see every field.</caption><thead id="table-head"></thead><tbody id="table-body"></tbody></table>
+        </div>
+        <div id="empty-state" class="empty-state" hidden><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg><h3>No matching entries</h3><p>Try another name, material, or research term.</p><button type="button" class="text-button" id="empty-reset">Clear filters<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button></div>
+        <div class="table-footer"><span><span class="footer-dot"></span><span id="source-label">Apparel.xlsx</span></span><span id="table-hint">Select an item for all details. Scroll sideways for more columns.</span></div>
+      </section>
+
+      <section class="source-notes" id="source-notes" aria-labelledby="notes-title">
+        <div class="notes-heading"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg><h2 id="notes-title">A note on the numbers</h2></div>
+        <div class="notes-grid"><p>Values come directly from the supplied spreadsheets. Apparel armor values are shown as supplied; material and quality adjustments have not been calculated. Textile multipliers are marked <strong>×</strong>.</p><p>Insulation multipliers and fixed <strong>°C</strong> values stay separate. A dash (<strong>—</strong>) means a blank source cell, never zero. Use <strong>All columns</strong> or select an item to see every field.</p></div>
+        <div class="source-downloads"><span>Original workbooks</span><a href="./sources/Apparel.xlsx" download>Apparel.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/Textiles.xlsx" download>Textiles.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a></div>
+      </section>
+      <noscript><p class="noscript-message">Enable JavaScript to search the tables, or download the original workbooks above.</p></noscript>
+    </main>
+
+    <footer class="site-footer"><span>RimWorld Field Notes</span><span>Unofficial personal reference. RimWorld is by Ludeon Studios.</span></footer>
+
+    <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title">
+      <div class="detail-header"><div><p class="eyebrow" id="detail-category"></p><h2 id="detail-title"></h2></div><button type="button" id="close-detail" class="icon-button" aria-label="Close item details"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+      <dl id="detail-fields" class="detail-fields"></dl>
+      <p class="detail-source" id="detail-source"></p>
+    </dialog>
+  </body>
+</html>

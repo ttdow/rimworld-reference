@@ -1,0 +1,39 @@
+name: Deploy RimWorld reference to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out this project
+        uses: actions/checkout@v4
+      - name: Check browser scripts
+        run: |
+          node --check site/assets/data.js
+          node --check site/assets/app.js
+      - name: Configure this project's Pages deployment
+        uses: actions/configure-pages@v5
+      - name: Upload this site's files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy this project's Pages site
+        id: deployment
+        uses: actions/deploy-pages@v4
