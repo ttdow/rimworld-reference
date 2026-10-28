@@ -1,8 +1,12 @@
 # RimWorld Field Notes
 
-A static GitHub Pages reference for apparel and textiles, populated from the original workbooks in this directory.
+A static GitHub Pages reference for apparel, textiles, and egg-laying animals, populated from the original workbooks and CSV in this directory.
 
-The page has searchable, sortable tables, category filters, focused column views, every original column, item details, a light/dark theme, and CSV export of the filtered records. Searches cover every field, including fields outside the selected column view. Empty spreadsheet cells remain empty; no material or quality calculations are added.
+Live site: https://ttdow.github.io/rimworld-reference/
+
+The page has searchable, sortable tables, category filters, focused column views, every original column, item details, a light/dark theme, and CSV export of the filtered records. Searches cover every field, including fields outside the selected column view. Empty source cells remain empty; no material or quality calculations are added. The animals table also filters by game content and male requirements, and retains the supplied production and feed-efficiency estimates with clickable wiki sources.
+
+Link directly to the animals table with `https://ttdow.github.io/rimworld-reference/#eggs`.
 
 ## Preview
 
@@ -14,16 +18,16 @@ python -m http.server 8765 --bind 127.0.0.1 --directory site
 
 ## Update the data
 
-Update `Apparel.xlsx` or `Textiles.xlsx`, then run:
+Update `Apparel.xlsx`, `Textiles.xlsx`, or `rimworld_egg_laying_animals_comparison.csv`, then run:
 
 ```powershell
 python -m pip install openpyxl
 python scripts/export_spreadsheets.py
 ```
 
-The exporter reads the original files without modifying them. It generates `site/assets/data.js` and copies the source workbooks to `site/sources/` for download. All original values and columns are retained; item details identify the workbook, sheet, and row. Changed headers, extra sheets, duplicate names, and formulas without saved results stop the export for review. The exporter requires Python 3.10 or later.
+The exporter reads the original files without modifying them. It generates `site/assets/data.js` and copies the source files to `site/sources/` for download. All original values and columns are retained; item details identify the file, sheet (for workbooks), and row. Changed headers, extra sheets, duplicate names, and formulas without saved results stop the export for review. CSV numeric fields are typed for sorting, and percentage values already expressed in percent are displayed without rescaling. Source estimates are not recalculated from rounded inputs. The exporter requires Python 3.10 or later.
 
-Commit the updated workbooks and generated site files together. GitHub deploys the committed static files; it does not need spreadsheet libraries.
+Commit the updated source files and generated site files together. GitHub deploys the committed static files; it does not need spreadsheet libraries.
 
 ## Publish as a separate GitHub Pages project
 

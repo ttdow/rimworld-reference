@@ -1,0 +1,2 @@
+# Preserve the supplied CSV and its downloadable copy byte for byte.
+*.csv -text

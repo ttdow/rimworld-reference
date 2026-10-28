@@ -8,6 +8,7 @@
   const copy = {
     apparel: {
       eyebrow: "EQUIPMENT",
+      countLabel: "items",
       description: "Find the right layers for your colonists.",
       placeholder: "Search apparel, materials, research…",
       category: "Layer",
@@ -21,6 +22,7 @@
     },
     textiles: {
       eyebrow: "MATERIALS",
+      countLabel: "textiles",
       description: "Compare the materials behind your apparel.",
       placeholder: "Search textiles, categories, any value…",
       category: "Category",
@@ -32,6 +34,24 @@
         { id: "all", label: "All columns", keys: datasets.textiles.columns.map((column) => column.key) },
       ],
     },
+    eggs: {
+      eyebrow: "ANIMALS",
+      countLabel: "animals",
+      description: "Compare egg output, feed efficiency, and breeding needs.",
+      placeholder: "Search animals, diet, Core, Odyssey…",
+      category: "Diet",
+      categoryAll: "All diets",
+      filters: [
+        { key: "content", label: "Content", all: "All content" },
+        { key: "maleRequired", label: "Male for egg output", all: "Either" },
+      ],
+      views: [
+        { id: "overview", label: "Overview", keys: ["name", "content", "diet", "maleRequired", "eggsPerDay", "nutritionPerDay", "breederEfficiency", "annualEggs"] },
+        { id: "production", label: "Egg production", keys: ["name", "unfertilized", "maleRequired", "eggNutrition", "clutch", "intervalDays", "eggsPerDay", "nutritionPerDay", "annualEggs"] },
+        { id: "breeding", label: "Feed & breeding", keys: ["name", "diet", "femaleFeed", "femaleEfficiency", "malesPerFemale", "breederEfficiency"] },
+        { id: "all", label: "All columns", keys: datasets.eggs.columns.map((column) => column.key) },
+      ],
+    },
   };
   const shortLabels = {
     name: "Name", layer: "Layer", category: "Category", sharp: "Sharp armor", blunt: "Blunt armor", heatArmor: "Heat armor",
@@ -40,10 +60,15 @@
     work: "Work (ticks)", material1Amount: "Material 1 qty", material1Type: "Material 1 type", material2Amount: "Material 2 qty",
     material2Type: "Material 2 type", marketValue: "Base value", valueWork: "Value / work", valueMaterial: "Value / material",
     beauty: "Beauty ×", flammability: "Flammability ×", coldBonus: "Cold bonus (°C)", heatBonus: "Heat bonus (°C)", materials: "Materials",
+    content: "Content", diet: "Diet", unfertilized: "Lays without male", maleRequired: "Male for egg output",
+    eggNutrition: "Nutrition / egg", clutch: "Eggs / clutch", intervalDays: "Laying interval (days)",
+    eggsPerDay: "Eggs / day", nutritionPerDay: "Egg nutrition / day (max)", femaleFeed: "Female feed nutrition / day",
+    femaleEfficiency: "Egg nutrition / female feed (%)", malesPerFemale: "Males / female (approx.)", breederEfficiency: "Egg nutrition / breeder feed (%)",
+    annualEggs: "Eggs / 60-day year (max)", wikiUrl: "Species wiki", sourceUrl: "Data source",
   };
   const state = { dataset: "apparel", tables: {} };
   for (const key of Object.keys(datasets)) {
-    state.tables[key] = { query: "", category: "", view: "overview", sort: "name", direction: "asc" };
+    state.tables[key] = { query: "", category: "", filters: {}, view: "overview", sort: "name", direction: "asc" };
     $(`#${key}-total`).textContent = datasets[key].rows.length;
     $(`#${key}-count`).textContent = datasets[key].rows.length;
   }
@@ -51,6 +76,8 @@
   const activeData = () => datasets[state.dataset];
   const activeState = () => state.tables[state.dataset];
   const isBlank = (value) => value === null || value === undefined || value === "";
+  const isNumericColumn = (column) => ["number", "multiplier", "temperature", "percent"].includes(column.type);
+  const hasFilters = () => Boolean(activeState().query || activeState().category || Object.values(activeState().filters).some(Boolean));
   const normalize = (value) => String(value).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   const sourceColumns = () => new Map(activeData().columns.map((column) => [column.key, column]));
 
@@ -76,7 +103,27 @@
     const formatted = numberFormat.format(value);
     if (column.type === "multiplier") return `${formatted}×`;
     if (column.type === "temperature") return `${formatted} °C`;
+    if (column.type === "percent") return `${formatted}%`;
     return formatted;
+  }
+
+  function appendValue(element, value, column, compact = false) {
+    if (column.type === "url" && !isBlank(value)) {
+      try {
+        const url = new URL(String(value));
+        if (["https:", "http:"].includes(url.protocol)) {
+          const link = document.createElement("a");
+          link.href = url.href;
+          link.textContent = compact ? labelFor(column) : String(value);
+          link.title = String(value);
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          element.append(link);
+          return;
+        }
+      } catch { /* Display invalid source URLs as text. */ }
+    }
+    element.textContent = displayValue(value, column);
   }
 
   function visibleRows() {
@@ -85,6 +132,7 @@
     const terms = normalize(current.query).trim().split(/\s+/).filter(Boolean);
     const rows = data.rows.filter((row) => {
       if (current.category && row[data.categoryKey] !== current.category) return false;
+      if (Object.entries(current.filters).some(([key, value]) => value && row[key] !== value)) return false;
       const text = normalize(data.columns.map((column) => row[column.key] ?? "").join(" "));
       return terms.every((term) => text.includes(term));
     });
@@ -107,12 +155,36 @@
   }
 
   function labelFor(column) {
+    if (state.dataset === "eggs" && column.key === "name") return "Animal";
     if (state.dataset === "textiles") {
       if (column.key === "hp") return "Max HP ×";
       if (["sharp", "blunt", "heatArmor"].includes(column.key)) return `${shortLabels[column.key]} ×`;
       if (column.key === "marketValue") return "Silver / unit";
     }
     return shortLabels[column.key] || column.label;
+  }
+
+  function renderExtraFilters() {
+    const container = $("#extra-filters");
+    container.replaceChildren();
+    for (const filter of copy[state.dataset].filters || []) {
+      const label = document.createElement("label");
+      label.className = "category-filter";
+      const title = document.createElement("span");
+      title.textContent = filter.label;
+      const select = document.createElement("select");
+      select.dataset.filter = filter.key;
+      select.setAttribute("aria-label", filter.label);
+      const values = [...new Set(activeData().rows.map((row) => row[filter.key]).filter((value) => !isBlank(value)))].sort(collator.compare);
+      select.append(new Option(filter.all, ""), ...values.map((value) => new Option(value, value)));
+      select.value = activeState().filters[filter.key] || "";
+      select.addEventListener("change", () => {
+        activeState().filters[filter.key] = select.value;
+        renderTable();
+      });
+      label.append(title, select);
+      container.append(label);
+    }
   }
 
   function renderViews() {
@@ -149,7 +221,7 @@
     for (const column of columns) {
       const th = document.createElement("th");
       th.scope = "col";
-      if (column.type !== "text") th.className = "numeric";
+      if (isNumericColumn(column)) th.className = "numeric";
       const sorted = current.sort === column.key;
       th.setAttribute("aria-sort", sorted ? (current.direction === "asc" ? "ascending" : "descending") : "none");
       const button = document.createElement("button");
@@ -201,8 +273,8 @@
           chip.textContent = displayValue(value, column);
           td.append(chip);
         } else {
-          td.textContent = displayValue(value, column);
-          if (column.type !== "text") td.classList.add("numeric");
+          appendValue(td, value, column, true);
+          if (isNumericColumn(column)) td.classList.add("numeric");
           if (["special", "coverage", "research", "material1Type", "material2Type"].includes(column.key)) td.classList.add("long-text");
           if (column.key === "materials") td.classList.add("materials-cell");
         }
@@ -215,11 +287,11 @@
       fragment.append(tr);
     }
     $("#table-body").replaceChildren(fragment);
-    $("#result-count").textContent = `${rows.length} of ${data.rows.length} ${state.dataset === "apparel" ? "items" : "textiles"}`;
+    $("#result-count").textContent = `${rows.length} of ${data.rows.length} ${copy[state.dataset].countLabel}`;
     $("#table-scroll").hidden = rows.length === 0;
     $("#empty-state").hidden = rows.length !== 0;
     $("#export-csv").disabled = rows.length === 0;
-    $("#reset-filters").disabled = !current.query && !current.category;
+    $("#reset-filters").disabled = !hasFilters();
     $("#table-scroll").scrollTop = 0;
   }
 
@@ -245,9 +317,12 @@
     for (const value of categories) options.push(new Option(value, value));
     $("#category").replaceChildren(...options);
     $("#category").value = current.category;
-    $("#source-label").textContent = `${data.source.file} · ${data.source.sheet}`;
+    $("#source-label").textContent = [data.source.file, data.source.sheet].filter(Boolean).join(" · ");
+    $("#equipment-data-notes").hidden = key === "eggs";
+    $("#egg-data-notes").hidden = key !== "eggs";
     $("#table-scroll").setAttribute("aria-label", `${data.name} table; scroll for more columns`);
     $("#table-caption").textContent = `${data.name} from ${data.source.file}. Select a column heading to sort or an item name to see every field.`;
+    renderExtraFilters();
     renderViews();
     renderTable();
     $("#table-scroll").scrollLeft = 0;
@@ -264,13 +339,14 @@
       const term = document.createElement("dt");
       term.textContent = column.label;
       const detail = document.createElement("dd");
-      detail.textContent = displayValue(row[column.key], column);
+      appendValue(detail, row[column.key], column);
       if (isBlank(row[column.key])) detail.className = "missing";
       wrapper.append(term, detail);
       fragment.append(wrapper);
     }
     $("#detail-fields").replaceChildren(fragment);
-    $("#detail-source").textContent = `Source: ${data.source.file} · ${data.source.sheet} · row ${row.sourceRow}. Values as supplied.`;
+    const sourceLabel = [data.source.file, data.source.sheet, `row ${row.sourceRow}`].filter(Boolean).join(" · ");
+    $("#detail-source").textContent = `Source: ${sourceLabel}. Values as supplied.`;
     $("#detail-dialog").showModal();
     $("#detail-dialog").scrollTop = 0;
     $("#close-detail").focus({ preventScroll: true });
@@ -279,8 +355,10 @@
   function resetFilters() {
     activeState().query = "";
     activeState().category = "";
+    activeState().filters = {};
     $("#search").value = "";
     $("#category").value = "";
+    for (const select of $("#extra-filters").querySelectorAll("select")) select.value = "";
     renderTable();
   }
 
@@ -299,7 +377,7 @@
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `rimworld-${state.dataset}${activeState().query || activeState().category ? "-filtered" : ""}.csv`;
+    anchor.download = `rimworld-${state.dataset}${hasFilters() ? "-filtered" : ""}.csv`;
     document.body.append(anchor);
     anchor.click();
     anchor.remove();
@@ -316,7 +394,14 @@
     try { localStorage.setItem("rimworld-field-notes-theme", selected); } catch { /* Storage may be disabled. */ }
   }
 
-  for (const button of document.querySelectorAll("[data-dataset]")) button.addEventListener("click", () => selectDataset(button.dataset.dataset));
+  for (const button of document.querySelectorAll("[data-dataset]")) button.addEventListener("click", () => {
+    selectDataset(button.dataset.dataset);
+    window.history.replaceState(null, "", `#${button.dataset.dataset}`);
+  });
+  window.addEventListener("hashchange", () => {
+    const key = window.location.hash.slice(1);
+    if (datasets[key]) selectDataset(key);
+  });
   $("#search").addEventListener("input", (event) => { activeState().query = event.target.value; renderTable(); });
   $("#category").addEventListener("change", (event) => { activeState().category = event.target.value; renderTable(); });
   $("#reset-filters").addEventListener("click", resetFilters);
@@ -339,5 +424,6 @@
   let savedTheme = "dark";
   try { savedTheme = localStorage.getItem("rimworld-field-notes-theme") || "dark"; } catch { /* Use default. */ }
   setTheme(savedTheme);
-  selectDataset("apparel");
+  const requestedDataset = window.location.hash.slice(1);
+  selectDataset(datasets[requestedDataset] ? requestedDataset : "apparel");
 })();

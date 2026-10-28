@@ -1,0 +1,25 @@
+﻿Animal,Content,Diet,Lays unfertilized eggs (no male),Male required for egg output,Egg nutrition (per egg),Average eggs per clutch,Egg laying interval (days),Average eggs per day (fertilized if required),"Egg nutrition per day (female, max)",Adult female daily feed nutrition,Gross egg nutrition / female feed (%),Approx males per female for continuous fertilization,Egg nutrition / total breeder feed (%),Expected eggs per 60-day year (max),Species wiki URL,Data source URL
+Alligator,Odyssey,Carnivore,No,Yes,0.50,1.50,12.000,0.125,0.062,0.52,12.0,0.09,11.0,7.5,https://rimworldwiki.com/wiki/Alligator,https://rimworldwiki.com/wiki/Egg
+Bluebird,Odyssey,Herbivore,No,Yes,0.25,1.00,3.000,0.333,0.083,0.16,52.1,0.25,41.7,20.0,https://rimworldwiki.com/wiki/Bluebird,https://rimworldwiki.com/wiki/Egg
+Cassowary,Core,Herbivore,No,Yes,0.50,1.00,3.330,0.300,0.150,0.60,25.0,0.33,18.8,18.0,https://rimworldwiki.com/wiki/Cassowary,https://rimworldwiki.com/wiki/Egg
+Chicken,Core,Herbivore,Yes,No,0.25,1.00,1.000,1.000,0.250,0.22,113.6,0.00,113.6,60.0,https://rimworldwiki.com/wiki/Chicken,https://rimworldwiki.com/wiki/Egg
+Cobra,Core,Carnivore,No,Yes,0.25,1.50,10.000,0.150,0.037,0.12,31.2,0.11,28.2,9.0,https://rimworldwiki.com/wiki/Cobra,https://rimworldwiki.com/wiki/Egg
+Crow,Odyssey,Omnivore,No,Yes,0.25,1.00,3.000,0.333,0.083,0.18,46.3,0.37,33.8,20.0,https://rimworldwiki.com/wiki/Crow,https://rimworldwiki.com/wiki/Egg
+Duck,Core,Herbivore,Yes,No,0.25,1.00,1.000,1.000,0.250,0.28,89.3,0.00,89.3,60.0,https://rimworldwiki.com/wiki/Duck,https://rimworldwiki.com/wiki/Egg
+Emu,Core,Herbivore,No,Yes,0.50,1.00,3.330,0.300,0.150,0.60,25.0,0.33,18.8,18.0,https://rimworldwiki.com/wiki/Emu,https://rimworldwiki.com/wiki/Egg
+Flamingo,Odyssey,Omnivore,No,Yes,0.50,1.00,2.000,0.500,0.250,0.70,35.7,0.55,23.0,30.0,https://rimworldwiki.com/wiki/Flamingo,https://rimworldwiki.com/wiki/Egg
+Goose,Core,Herbivore,Yes,No,0.50,1.00,2.000,0.500,0.250,0.45,55.6,0.00,55.6,30.0,https://rimworldwiki.com/wiki/Goose,https://rimworldwiki.com/wiki/Egg
+Heron,Odyssey,Omnivore,No,Yes,0.50,1.00,2.000,0.500,0.250,0.70,35.7,0.55,23.0,30.0,https://rimworldwiki.com/wiki/Heron,https://rimworldwiki.com/wiki/Egg
+Iguana,Core,Omnivore,No,Yes,0.25,1.50,5.661,0.265,0.066,0.38,17.4,0.19,14.6,15.9,https://rimworldwiki.com/wiki/Iguana,https://rimworldwiki.com/wiki/Egg
+Macaw,Odyssey,Herbivore,No,Yes,0.25,1.00,8.000,0.125,0.031,0.21,14.9,0.09,13.7,7.5,https://rimworldwiki.com/wiki/Macaw,https://rimworldwiki.com/wiki/Egg
+Monitor lizard,Odyssey,Omnivore,No,Yes,0.25,1.00,6.000,0.167,0.042,0.38,11.0,0.18,9.3,10.0,https://rimworldwiki.com/wiki/Monitor_lizard,https://rimworldwiki.com/wiki/Egg
+Ostrich,Core,Herbivore,No,Yes,0.60,1.00,3.330,0.300,0.180,0.89,20.2,0.33,15.2,18.0,https://rimworldwiki.com/wiki/Ostrich,https://rimworldwiki.com/wiki/Egg
+Peafowl,Odyssey,Herbivore,No,Yes,0.25,1.00,2.000,0.500,0.125,0.57,21.9,0.55,14.1,30.0,https://rimworldwiki.com/wiki/Peafowl,https://rimworldwiki.com/wiki/Egg
+Penguin,Odyssey,Carnivore,No,Yes,0.50,1.00,2.000,0.500,0.250,0.70,35.7,0.55,23.0,30.0,https://rimworldwiki.com/wiki/Penguin,https://rimworldwiki.com/wiki/Egg
+Quail,Odyssey,Herbivore,No,Yes,0.25,1.00,1.300,0.769,0.192,0.30,64.1,0.57,40.8,46.2,https://rimworldwiki.com/wiki/Quail,https://rimworldwiki.com/wiki/Egg
+Sea turtle,Odyssey,Omnivore,No,Yes,0.50,1.50,6.660,0.225,0.113,0.19,59.3,0.17,50.7,13.5,https://rimworldwiki.com/wiki/Sea_turtle,https://rimworldwiki.com/wiki/Egg
+Sparrow,Odyssey,Herbivore,No,Yes,0.25,1.00,3.000,0.333,0.083,0.16,52.1,0.25,41.7,20.0,https://rimworldwiki.com/wiki/Sparrow,https://rimworldwiki.com/wiki/Egg
+Swan,Odyssey,Herbivore,No,Yes,0.25,1.00,2.000,0.500,0.125,0.62,20.2,0.37,14.7,30.0,https://rimworldwiki.com/wiki/Swan,https://rimworldwiki.com/wiki/Egg
+Tortoise,Core,Omnivore,No,Yes,0.25,2.00,6.660,0.300,0.075,0.15,50.1,0.17,42.8,18.0,https://rimworldwiki.com/wiki/Tortoise,https://rimworldwiki.com/wiki/Egg
+Turkey,Core,Herbivore,No,Yes,0.50,1.00,1.333,0.750,0.375,0.82,45.7,0.83,25.0,45.0,https://rimworldwiki.com/wiki/Turkey,https://rimworldwiki.com/wiki/Egg
+Vulture,Odyssey,Carnivore,No,Yes,0.25,1.00,4.000,0.250,0.062,0.47,13.3,0.28,10.4,15.0,https://rimworldwiki.com/wiki/Vulture,https://rimworldwiki.com/wiki/Egg
