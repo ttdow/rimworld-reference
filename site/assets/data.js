@@ -2715,6 +2715,335 @@ window.RIMWORLD_DATA = {
           "sourceRow": 25
         }
       ]
+    },
+    "milk": {
+      "name": "Milk-producing animals",
+      "nameKey": "name",
+      "categoryKey": "packAnimal",
+      "source": {
+        "file": "rimworld_milk_producing_animals_comparison.csv",
+        "format": "csv",
+        "sha256": "4c0b88f5f1005caad36695d55eb4d2ddbbe34be5571033bdf36eebd8a937c889"
+      },
+      "columns": [
+        {
+          "key": "name",
+          "label": "Animal",
+          "type": "text"
+        },
+        {
+          "key": "content",
+          "label": "Content",
+          "type": "text"
+        },
+        {
+          "key": "diet",
+          "label": "Diet",
+          "type": "text"
+        },
+        {
+          "key": "adultFemales",
+          "label": "Milk from adult females",
+          "type": "text"
+        },
+        {
+          "key": "milkMaleRequired",
+          "label": "Male required for milk",
+          "type": "text"
+        },
+        {
+          "key": "milkPerMilking",
+          "label": "Milk per milking (units)",
+          "type": "number"
+        },
+        {
+          "key": "milkingInterval",
+          "label": "Milking interval (days)",
+          "type": "number"
+        },
+        {
+          "key": "milkPerDay",
+          "label": "Average milk/day (units)",
+          "type": "number"
+        },
+        {
+          "key": "milkNutrition",
+          "label": "Milk nutrition (per unit)",
+          "type": "number"
+        },
+        {
+          "key": "milkNutritionPerDay",
+          "label": "Milk nutrition/day (female, max)",
+          "type": "number"
+        },
+        {
+          "key": "femaleFeed",
+          "label": "Adult female feed nutrition/day",
+          "type": "number"
+        },
+        {
+          "key": "milkFeedEfficiency",
+          "label": "Gross milk nutrition / female feed (%)",
+          "type": "percent"
+        },
+        {
+          "key": "milkUnitsPerFeed",
+          "label": "Milk units / feed nutrition",
+          "type": "number"
+        },
+        {
+          "key": "hayPerDay",
+          "label": "Hay equivalent/day (units)",
+          "type": "number"
+        },
+        {
+          "key": "hay30Days",
+          "label": "Hay required for 30 days (units)",
+          "type": "number"
+        },
+        {
+          "key": "annualMilk",
+          "label": "Average milk in 60-day year (units)",
+          "type": "number"
+        },
+        {
+          "key": "packAnimal",
+          "label": "Pack animal",
+          "type": "text"
+        },
+        {
+          "key": "packCapacity",
+          "label": "Caravan pack capacity (kg)",
+          "type": "number"
+        },
+        {
+          "key": "caravanMount",
+          "label": "Caravan mount",
+          "type": "text"
+        },
+        {
+          "key": "minTemp",
+          "label": "Minimum comfortable temp (C)",
+          "type": "temperature"
+        },
+        {
+          "key": "maxTemp",
+          "label": "Maximum comfortable temp (C)",
+          "type": "temperature"
+        },
+        {
+          "key": "handlingSkill",
+          "label": "Minimum handling skill",
+          "type": "number"
+        },
+        {
+          "key": "maturityDays",
+          "label": "Maturity age (days)",
+          "type": "number"
+        },
+        {
+          "key": "wildness",
+          "label": "Wildness (%)",
+          "type": "percent"
+        },
+        {
+          "key": "notes",
+          "label": "Notes",
+          "type": "text"
+        },
+        {
+          "key": "wikiUrl",
+          "label": "Species wiki URL",
+          "type": "url"
+        },
+        {
+          "key": "sourceUrl",
+          "label": "Data source URL",
+          "type": "url"
+        }
+      ],
+      "rows": [
+        {
+          "name": "Caribou",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 10.0,
+          "milkingInterval": 2.0,
+          "milkPerDay": 5.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.25,
+          "femaleFeed": 0.44,
+          "milkFeedEfficiency": 56.8,
+          "milkUnitsPerFeed": 11.36,
+          "hayPerDay": 8.8,
+          "hay30Days": 264.0,
+          "annualMilk": 300.0,
+          "packAnimal": "No",
+          "packCapacity": null,
+          "caravanMount": "No",
+          "minTemp": -50.0,
+          "maxTemp": 40.0,
+          "handlingSkill": 8.0,
+          "maturityDays": 18.0,
+          "wildness": 75.0,
+          "notes": "Cold-adapted; wild herds; no caravan cargo capacity.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Caribou",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 2
+        },
+        {
+          "name": "Cow",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 14.0,
+          "milkingInterval": 1.0,
+          "milkPerDay": 14.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.7,
+          "femaleFeed": 0.86,
+          "milkFeedEfficiency": 81.4,
+          "milkUnitsPerFeed": 16.28,
+          "hayPerDay": 17.2,
+          "hay30Days": 516.0,
+          "annualMilk": 840.0,
+          "packAnimal": "No",
+          "packCapacity": null,
+          "caravanMount": "No",
+          "minTemp": -10.0,
+          "maxTemp": 40.0,
+          "handlingSkill": 0.0,
+          "maturityDays": 20.0,
+          "wildness": 0.0,
+          "notes": "Highest milk output and milk/feed efficiency; typically acquired through traders or animal join events.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Cow",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 3
+        },
+        {
+          "name": "Dromedary",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 18.0,
+          "milkingInterval": 2.0,
+          "milkPerDay": 9.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.45,
+          "femaleFeed": 0.86,
+          "milkFeedEfficiency": 52.3,
+          "milkUnitsPerFeed": 10.47,
+          "hayPerDay": 17.2,
+          "hay30Days": 516.0,
+          "annualMilk": 540.0,
+          "packAnimal": "Yes",
+          "packCapacity": 73.5,
+          "caravanMount": "Yes",
+          "minTemp": -22.0,
+          "maxTemp": 60.0,
+          "handlingSkill": 2.0,
+          "maturityDays": 20.0,
+          "wildness": 25.0,
+          "notes": "Pack animal and caravan mount; well suited to hot environments.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Dromedary",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 4
+        },
+        {
+          "name": "Elk",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 11.0,
+          "milkingInterval": 1.0,
+          "milkPerDay": 11.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.55,
+          "femaleFeed": 0.86,
+          "milkFeedEfficiency": 64.0,
+          "milkUnitsPerFeed": 12.79,
+          "hayPerDay": 17.2,
+          "hay30Days": 516.0,
+          "annualMilk": 660.0,
+          "packAnimal": "No",
+          "packCapacity": null,
+          "caravanMount": "No",
+          "minTemp": -50.0,
+          "maxTemp": 40.0,
+          "handlingSkill": 8.0,
+          "maturityDays": 20.0,
+          "wildness": 75.0,
+          "notes": "Cold-adapted; difficult to tame; no caravan cargo capacity.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Elk",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 5
+        },
+        {
+          "name": "Goat",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 12.0,
+          "milkingInterval": 3.0,
+          "milkPerDay": 4.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.2,
+          "femaleFeed": 0.36,
+          "milkFeedEfficiency": 55.6,
+          "milkUnitsPerFeed": 11.11,
+          "hayPerDay": 7.2,
+          "hay30Days": 216.0,
+          "annualMilk": 240.0,
+          "packAnimal": "No",
+          "packCapacity": null,
+          "caravanMount": "No",
+          "minTemp": -20.0,
+          "maxTemp": 40.0,
+          "handlingSkill": 0.0,
+          "maturityDays": 16.0,
+          "wildness": 0.0,
+          "notes": "Small domestic dairy animal; low feed cost but low milk output.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Goat",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 6
+        },
+        {
+          "name": "Yak",
+          "content": "Core",
+          "diet": "Herbivore",
+          "adultFemales": "Yes",
+          "milkMaleRequired": "No",
+          "milkPerMilking": 11.0,
+          "milkingInterval": 1.0,
+          "milkPerDay": 11.0,
+          "milkNutrition": 0.05,
+          "milkNutritionPerDay": 0.55,
+          "femaleFeed": 0.86,
+          "milkFeedEfficiency": 64.0,
+          "milkUnitsPerFeed": 12.79,
+          "hayPerDay": 17.2,
+          "hay30Days": 516.0,
+          "annualMilk": 660.0,
+          "packAnimal": "Yes",
+          "packCapacity": 73.5,
+          "caravanMount": "No",
+          "minTemp": -45.0,
+          "maxTemp": 40.0,
+          "handlingSkill": 2.0,
+          "maturityDays": 20.0,
+          "wildness": 20.0,
+          "notes": "Cold-hardy pack animal; useful dual-purpose choice for a mountainhold.",
+          "wikiUrl": "https://rimworldwiki.com/wiki/Yak",
+          "sourceUrl": "https://rimworldwiki.com/wiki/Milk",
+          "sourceRow": 7
+        }
+      ]
     }
   }
 };

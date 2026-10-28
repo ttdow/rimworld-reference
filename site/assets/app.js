@@ -52,6 +52,21 @@
         { id: "all", label: "All columns", keys: datasets.eggs.columns.map((column) => column.key) },
       ],
     },
+    milk: {
+      eyebrow: "ANIMALS",
+      countLabel: "animals",
+      description: "Compare milk yield, feed needs, climate, and caravan roles.",
+      placeholder: "Search animals, notes, diet, caravan roles…",
+      category: "Pack animal",
+      categoryAll: "Either",
+      filters: [{ key: "caravanMount", label: "Caravan mount", all: "Either" }],
+      views: [
+        { id: "overview", label: "Overview", keys: ["name", "milkPerDay", "milkNutritionPerDay", "femaleFeed", "milkFeedEfficiency", "hay30Days", "packAnimal", "caravanMount"] },
+        { id: "production", label: "Milk & feed", keys: ["name", "milkPerMilking", "milkingInterval", "milkPerDay", "milkNutritionPerDay", "femaleFeed", "milkFeedEfficiency", "milkUnitsPerFeed", "hayPerDay", "hay30Days", "annualMilk"] },
+        { id: "husbandry", label: "Climate & caravans", keys: ["name", "content", "diet", "packAnimal", "packCapacity", "caravanMount", "minTemp", "maxTemp", "handlingSkill", "maturityDays", "wildness"] },
+        { id: "all", label: "All columns", keys: datasets.milk.columns.map((column) => column.key) },
+      ],
+    },
   };
   const shortLabels = {
     name: "Name", layer: "Layer", category: "Category", sharp: "Sharp armor", blunt: "Blunt armor", heatArmor: "Heat armor",
@@ -65,6 +80,13 @@
     eggsPerDay: "Eggs / day", nutritionPerDay: "Egg nutrition / day (max)", femaleFeed: "Female feed nutrition / day",
     femaleEfficiency: "Egg nutrition / female feed (%)", malesPerFemale: "Males / female (approx.)", breederEfficiency: "Egg nutrition / breeder feed (%)",
     annualEggs: "Eggs / 60-day year (max)", wikiUrl: "Species wiki", sourceUrl: "Data source",
+    adultFemales: "Milk from adult females", milkMaleRequired: "Male for milk", milkPerMilking: "Milk / milking (units)",
+    milkingInterval: "Milking interval (days)", milkPerDay: "Milk / day (units)", milkNutrition: "Nutrition / milk unit",
+    milkNutritionPerDay: "Milk nutrition / day (max)", milkFeedEfficiency: "Milk nutrition / female feed (%)",
+    milkUnitsPerFeed: "Milk units / feed nutrition", hayPerDay: "Hay equivalent / day (units)", hay30Days: "Hay / 30 days (units)",
+    annualMilk: "Milk / 60-day year (units)", packAnimal: "Pack animal", packCapacity: "Pack capacity (kg)",
+    caravanMount: "Caravan mount", minTemp: "Min comfortable (°C)", maxTemp: "Max comfortable (°C)",
+    handlingSkill: "Min handling skill", maturityDays: "Maturity age (days)", wildness: "Wildness (%)", notes: "Notes",
   };
   const state = { dataset: "apparel", tables: {} };
   for (const key of Object.keys(datasets)) {
@@ -155,7 +177,7 @@
   }
 
   function labelFor(column) {
-    if (state.dataset === "eggs" && column.key === "name") return "Animal";
+    if (["eggs", "milk"].includes(state.dataset) && column.key === "name") return "Animal";
     if (state.dataset === "textiles") {
       if (column.key === "hp") return "Max HP ×";
       if (["sharp", "blunt", "heatArmor"].includes(column.key)) return `${shortLabels[column.key]} ×`;
@@ -275,7 +297,7 @@
         } else {
           appendValue(td, value, column, true);
           if (isNumericColumn(column)) td.classList.add("numeric");
-          if (["special", "coverage", "research", "material1Type", "material2Type"].includes(column.key)) td.classList.add("long-text");
+          if (["special", "coverage", "research", "material1Type", "material2Type", "notes"].includes(column.key)) td.classList.add("long-text");
           if (column.key === "materials") td.classList.add("materials-cell");
         }
         if (isBlank(value)) {
@@ -318,8 +340,9 @@
     $("#category").replaceChildren(...options);
     $("#category").value = current.category;
     $("#source-label").textContent = [data.source.file, data.source.sheet].filter(Boolean).join(" · ");
-    $("#equipment-data-notes").hidden = key === "eggs";
+    $("#equipment-data-notes").hidden = ["eggs", "milk"].includes(key);
     $("#egg-data-notes").hidden = key !== "eggs";
+    $("#milk-data-notes").hidden = key !== "milk";
     $("#table-scroll").setAttribute("aria-label", `${data.name} table; scroll for more columns`);
     $("#table-caption").textContent = `${data.name} from ${data.source.file}. Select a column heading to sort or an item name to see every field.`;
     renderExtraFilters();
