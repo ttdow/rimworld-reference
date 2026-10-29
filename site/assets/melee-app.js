@@ -11,9 +11,45 @@
   const variants = [...D.variants, E.UNARMED], byId = new Map(variants.map(v => [v.id, v]));
   const results = new Map();
   let worker = null, running = false, token = 0, run = null, selected = null, sortKey = "median", sortAsc = true, lastPaint = 0;
-  function option(select, value, label = value) { const el = document.createElement("option"); el.value = value; el.textContent = label; select.append(el); }
-  [...new Set(D.variants.map(v => v.weapon))].sort().forEach(v => option($("weapon"), v));
-  [...new Set(D.variants.map(v => v.material))].filter(v => v !== "None").sort().forEach(v => option($("material"), v));
+  const choices = {
+    weapons: { values: [...new Set(D.variants.map(v => v.weapon))].sort(), all: "All weapons", none: "No weapons", noun: "weapons" },
+    qualities: { values: ["Awful", "Poor", "Normal", "Good", "Excellent", "Masterwork", "Legendary", "Fixed"], initial: ["Normal", "Fixed"], all: "All qualities", none: "No qualities", noun: "qualities" },
+    materials: { values: [...new Set(D.variants.map(v => v.material))].filter(v => v !== "None").sort().concat("None"), all: "All materials", none: "No materials", noun: "materials" }
+  };
+  const choiceLabel = value => value === "None" ? "No material" : value;
+  const choiceInputs = key => [...$(key + "-options").querySelectorAll('input[type="checkbox"]')];
+  const selections = key => choiceInputs(key).filter(input => input.checked).map(input => input.value);
+  for (const [key, choice] of Object.entries(choices)) {
+    for (const value of choice.values) {
+      const label = document.createElement("label"), input = document.createElement("input");
+      input.type = "checkbox"; input.name = key; input.value = value;
+      input.checked = !choice.initial || choice.initial.includes(value);
+      label.append(input, document.createTextNode(choiceLabel(value)));
+      if (value === "Fixed") label.title = "No quality variation";
+      $(key + "-options").append(label);
+    }
+    for (const action of ["all", "clear"]) {
+      const button = $(key + "-" + action);
+      button.setAttribute("aria-label", `${action === "all" ? "Select all" : "Clear"} ${choice.noun}`);
+      button.addEventListener("click", () => {
+        if (running) return;
+        choiceInputs(key).forEach(input => { input.checked = action === "all"; });
+        settingsChanged();
+      });
+    }
+  }
+  document.addEventListener("click", event => {
+    for (const key of Object.keys(choices)) {
+      const picker = $(key + "-picker");
+      if (!picker.contains(event.target)) picker.open = false;
+    }
+  });
+  document.addEventListener("keydown", event => {
+    const picker = event.target.closest?.(".multi-picker");
+    if (event.key === "Escape" && picker?.open) {
+      picker.open = false; picker.querySelector("summary").focus(); event.preventDefault();
+    }
+  });
   $("snapshot-description").textContent = `${D.variants.length} weapon variants · 24 weapons · Wiki snapshot: ${D.snapshotDate}.`;
   $("source-list").innerHTML = D.sources.map(s => `<li><a href="${escape(s.snapshotUrl)}" target="_blank" rel="noopener noreferrer">${escape(s.title)}</a> · revision ${s.revision}</li>`).join("");
   document.querySelector('a[href="#method"]').addEventListener("click", () => { $("method").open = true; });
@@ -27,7 +63,8 @@
   $("theme-toggle").addEventListener("click", () => theme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
   function pool() {
     const enabled = ["Royalty", "Anomaly", "Odyssey"].filter(d => $("dlc-" + d).checked);
-    const rows = D.variants.filter(v => (!$("weapon").value || v.weapon === $("weapon").value) && ($("quality").value === "all" || v.quality === "Fixed" || v.quality === $("quality").value) && (!$("material").value || v.material === "None" || v.material === $("material").value) && v.dlc.every(d => enabled.includes(d)));
+    const weapons = new Set(selections("weapons")), qualities = new Set(selections("qualities")), materials = new Set(selections("materials"));
+    const rows = D.variants.filter(v => weapons.has(v.weapon) && qualities.has(v.quality) && materials.has(v.material) && v.dlc.every(d => enabled.includes(d)));
     if ($("unarmed").checked) rows.push(E.UNARMED);
     return rows;
   }
@@ -37,6 +74,11 @@
     return E.normalizeConfig(input);
   }
   function settingsChanged() {
+    for (const [key, choice] of Object.entries(choices)) {
+      const selected = selections(key), labels = selected.map(choiceLabel), summary = $(key + "-summary");
+      summary.textContent = selected.length === choice.values.length ? choice.all : !selected.length ? choice.none : selected.length <= 2 ? labels.join(", ") : `${selected.length} ${choice.noun}`;
+      summary.parentElement.title = labels.join(", ") || choice.none;
+    }
     const n = pool().length, count = n * Number($("trials").value);
     $("pool-count").textContent = `${fmt(n)} variations · ${fmt(count)} total trials`;
     $("armor-description").textContent = $("armor").value === "none" ? "No armor." : $("armor").value === "flak" ? "Normal quality; steel helmet; cloth shirt and pants." : "Normal quality; cloth shirt and pants.";
@@ -173,7 +215,8 @@
     $("form-error").hidden = true;
     token++; const current = token;
     running = true; selected = null; results.clear();
-    run = { config, ids: chosen.map(v => v.id), createdAt: new Date().toISOString(), startedAt: performance.now(), status: "running", selection: { weapon: $("weapon").value, material: $("material").value, quality: $("quality").value, dlc: ["Royalty", "Anomaly", "Odyssey"].filter(d => $("dlc-" + d).checked), unarmed: $("unarmed").checked } };
+    run = { config, ids: chosen.map(v => v.id), createdAt: new Date().toISOString(), startedAt: performance.now(), status: "running", selection: { weapons: selections("weapons"), qualities: selections("qualities"), materials: selections("materials"), dlc: ["Royalty", "Anomaly", "Odyssey"].filter(d => $("dlc-" + d).checked), unarmed: $("unarmed").checked } };
+    for (const key of Object.keys(choices)) $(key + "-picker").open = false;
     $("settings").disabled = true; $("run").disabled = true; $("cancel").hidden = false;
     $("variant-detail").hidden = true;
     $("run-badge").textContent = "RUNNING"; $("run-progress").hidden = false; $("run-progress").value = 0;

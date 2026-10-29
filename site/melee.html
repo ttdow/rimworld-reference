@@ -31,8 +31,11 @@
           <div class="settings-heading"><h2>Settings</h2></div>
           <div class="setting-section">
             <h3>Weapon pool</h3>
-            <label>Weapon<select id="weapon"><option value="">All weapons</option></select></label>
-            <div class="field-pair"><label>Quality<select id="quality"><option>Normal</option><option value="all">All qualities</option><option>Awful</option><option>Poor</option><option>Good</option><option>Excellent</option><option>Masterwork</option><option>Legendary</option></select></label><label>Material<select id="material"><option value="">All materials</option></select></label></div>
+            <div class="multi-field"><span id="weapons-label">Weapons</span><details class="multi-picker" id="weapons-picker"><summary aria-labelledby="weapons-label weapons-summary"><span id="weapons-summary">All weapons</span></summary><div class="multi-menu"><div class="multi-actions"><button type="button" id="weapons-all">All</button><button type="button" id="weapons-clear">Clear</button></div><div class="option-list" id="weapons-options" role="group" aria-label="Weapons"></div></div></details></div>
+            <div class="field-pair">
+              <div class="multi-field"><span id="qualities-label">Quality</span><details class="multi-picker" id="qualities-picker"><summary aria-labelledby="qualities-label qualities-summary"><span id="qualities-summary">Normal, Fixed</span></summary><div class="multi-menu"><div class="multi-actions"><button type="button" id="qualities-all">All</button><button type="button" id="qualities-clear">Clear</button></div><div class="option-list" id="qualities-options" role="group" aria-label="Quality"></div></div></details></div>
+              <div class="multi-field"><span id="materials-label">Materials</span><details class="multi-picker" id="materials-picker"><summary aria-labelledby="materials-label materials-summary"><span id="materials-summary">All materials</span></summary><div class="multi-menu"><div class="multi-actions"><button type="button" id="materials-all">All</button><button type="button" id="materials-clear">Clear</button></div><div class="option-list" id="materials-options" role="group" aria-label="Materials"></div></div></details></div>
+            </div>
             <div class="check-row" role="group" aria-label="Enabled DLC"><label><input type="checkbox" id="dlc-Royalty" checked> Royalty</label><label><input type="checkbox" id="dlc-Anomaly" checked> Anomaly</label><label><input type="checkbox" id="dlc-Odyssey" checked> Odyssey</label></div>
             <label class="check-label"><input type="checkbox" id="unarmed" checked> Include unarmed</label>
             <p class="pool-count" id="pool-count" role="status"></p>
@@ -92,7 +95,7 @@
         <li>Timeouts remain in all percentiles. “Not reached” means the percentile exceeds the time limit.</li>
         <li>95% intervals measure sampling uncertainty, not model accuracy.</li>
         <li>“Dead first” counts deaths before downing, divided by all trials.</li>
-        <li>Fixed items ignore quality/material filters.</li>
+        <li>Fixed = no quality variation. No material = no material variation. Unarmed is selected separately.</li>
       </ul>
       <p><a href="https://github.com/ttdow/rimworld-reference/blob/main/docs/melee-model.md" target="_blank" rel="noopener noreferrer">Full model specification and limitations ↗</a></p>
       <details class="source-revisions"><summary>Wiki revisions</summary><p>RimWorld Wiki contributors · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></p><ul id="source-list"></ul></details>

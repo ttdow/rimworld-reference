@@ -10,6 +10,22 @@
 .setting-section h3 { margin: 0 0 14px; font-weight: 600; font-size: 14px; }
 .settings-panel label, .example-controls label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
 .settings-panel input:not([type="checkbox"]), .settings-panel select, .example-controls input, .lab-search input { width: 100%; min-width: 0; padding: 9px 10px; color: var(--text); background: var(--input); border: 1px solid var(--line); border-radius: 4px; }
+.multi-field { display: grid; gap: 6px; min-width: 0; color: var(--muted); font-size: 12px; }
+.multi-picker { position: relative; min-width: 0; }
+.multi-picker > summary { display: flex; gap: 8px; align-items: center; justify-content: space-between; list-style: none; padding: 9px 10px; background: var(--input); color: var(--text); border: 1px solid var(--line); border-radius: 4px; }
+.multi-picker > summary::-webkit-details-marker { display: none; }
+.multi-picker > summary::after { content: "▾"; color: var(--muted); flex: none; }
+.multi-picker[open] > summary::after { content: "▴"; }
+.multi-picker > summary > span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.multi-menu { position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; width: 100%; min-width: 180px; padding: 8px; background: var(--panel-alt); border: 1px solid var(--line); border-radius: 4px; box-shadow: var(--shadow); }
+#materials-picker .multi-menu { left: auto; right: 0; }
+.multi-actions { display: flex; gap: 16px; padding: 2px 6px 8px; border-bottom: 1px solid var(--line); }
+.multi-actions button { background: transparent; color: var(--accent); padding: 4px 0; font-size: 12px; }
+.multi-actions button:hover { text-decoration: underline; }
+.option-list { max-height: 240px; overflow-y: auto; padding-top: 5px; scrollbar-color: var(--line) var(--panel); }
+.settings-panel .option-list label { display: flex; gap: 8px; align-items: center; padding: 6px; color: var(--text); font-size: 12px; cursor: pointer; }
+.option-list label:hover { background: var(--hover); }
+.option-list input { flex: none; }
 .field-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-top: 12px; }
 .field-help { font-size: 11px; line-height: 1.6; color: var(--subtle); margin: 10px 0 0; }
 .check-row { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 13px 0; }
