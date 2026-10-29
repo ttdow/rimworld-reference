@@ -1,8 +1,6 @@
 .lab-mark { font-size: 36px; line-height: 1; color: var(--accent); }
 .simulator-header { gap: 16px; flex-wrap: wrap; }
 .simulator-header .header-actions { gap: 12px; flex-wrap: wrap; margin-left: auto; }
-.back-link { display: inline-flex; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; color: var(--accent); font-size: 12px; text-decoration: none; }
-.back-link:hover { background: var(--hover); }
 .simulator-nav .dataset-button { text-decoration: none; }
 .lab-intro { padding-block: 24px; }
 .lab-intro h1 { font-size: 32px; }
