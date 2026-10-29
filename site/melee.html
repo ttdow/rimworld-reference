@@ -15,14 +15,21 @@
 </head>
 <body>
   <a class="skip-link" href="#lab">Skip to simulator</a>
-  <header class="site-header">
-    <a class="brand" href="./"><span class="lab-mark" aria-hidden="true">✦</span><span><strong>RIMWORLD</strong><span class="brand-subtitle">FIELD NOTES</span></span></a>
-    <div class="header-actions"><a class="source-link" href="./">Reference tables</a><button id="theme-toggle" class="text-button" type="button" aria-label="Switch to light theme">Light theme</button></div>
+  <header class="site-header simulator-header">
+    <a class="brand" href="./index.html"><span class="lab-mark" aria-hidden="true">✦</span><span><strong>RIMWORLD</strong><span class="brand-subtitle">FIELD NOTES</span></span></a>
+    <div class="header-actions"><a class="back-link" href="./index.html">← Tables</a><button id="theme-toggle" class="text-button" type="button" aria-label="Switch to light theme">Light theme</button></div>
   </header>
   <main id="lab">
     <section class="page-intro lab-intro">
       <div><h1>Melee simulator</h1><p class="intro-copy">Median time to downing or death.</p></div>
     </section>
+    <nav class="dataset-nav simulator-nav" aria-label="Reference sections">
+      <a class="dataset-button" href="./index.html#apparel">Apparel</a>
+      <a class="dataset-button" href="./index.html#textiles">Textiles</a>
+      <a class="dataset-button" href="./index.html#eggs">Egg-laying animals</a>
+      <a class="dataset-button" href="./index.html#milk">Milk-producing animals</a>
+      <a class="dataset-button dataset-link active" href="#lab" aria-current="page">Melee simulator</a>
+    </nav>
     <aside class="model-notice">Experimental. Excludes bleeding, ongoing fire, and retaliation. <a href="#method">Model details</a></aside>
     <div class="lab-layout">
       <form id="sim-form" class="settings-panel">
