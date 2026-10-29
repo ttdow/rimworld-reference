@@ -7,10 +7,8 @@
   const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
   const copy = {
     apparel: {
-      eyebrow: "EQUIPMENT",
       countLabel: "items",
-      description: "Find the right layers for your colonists.",
-      placeholder: "Search apparel, materials, research…",
+      placeholder: "Search apparel…",
       category: "Layer",
       categoryAll: "All layers",
       views: [
@@ -21,10 +19,8 @@
       ],
     },
     textiles: {
-      eyebrow: "MATERIALS",
       countLabel: "textiles",
-      description: "Compare the materials behind your apparel.",
-      placeholder: "Search textiles, categories, any value…",
+      placeholder: "Search textiles…",
       category: "Category",
       categoryAll: "All categories",
       views: [
@@ -35,10 +31,8 @@
       ],
     },
     eggs: {
-      eyebrow: "ANIMALS",
       countLabel: "animals",
-      description: "Compare egg output, feed efficiency, and breeding needs.",
-      placeholder: "Search animals, diet, Core, Odyssey…",
+      placeholder: "Search animals…",
       category: "Diet",
       categoryAll: "All diets",
       filters: [
@@ -53,10 +47,8 @@
       ],
     },
     milk: {
-      eyebrow: "ANIMALS",
       countLabel: "animals",
-      description: "Compare milk yield, feed needs, climate, and caravan roles.",
-      placeholder: "Search animals, notes, diet, caravan roles…",
+      placeholder: "Search animals…",
       category: "Pack animal",
       categoryAll: "Either",
       filters: [{ key: "caravanMount", label: "Caravan mount", all: "Either" }],
@@ -91,7 +83,6 @@
   const state = { dataset: "apparel", tables: {} };
   for (const key of Object.keys(datasets)) {
     state.tables[key] = { query: "", category: "", filters: {}, view: "overview", sort: "name", direction: "asc" };
-    $(`#${key}-total`).textContent = datasets[key].rows.length;
     $(`#${key}-count`).textContent = datasets[key].rows.length;
   }
 
@@ -329,8 +320,6 @@
       button.setAttribute("aria-pressed", String(selected));
     }
     $("#table-title").textContent = data.name;
-    $("#table-eyebrow").textContent = words.eyebrow;
-    $("#table-description").textContent = words.description;
     $("#search").value = current.query;
     $("#search").placeholder = words.placeholder;
     $("#category-label").textContent = words.category;
@@ -369,7 +358,7 @@
     }
     $("#detail-fields").replaceChildren(fragment);
     const sourceLabel = [data.source.file, data.source.sheet, `row ${row.sourceRow}`].filter(Boolean).join(" · ");
-    $("#detail-source").textContent = `Source: ${sourceLabel}. Values as supplied.`;
+    $("#detail-source").textContent = `Source: ${sourceLabel}`;
     $("#detail-dialog").showModal();
     $("#detail-dialog").scrollTop = 0;
     $("#close-detail").focus({ preventScroll: true });
@@ -424,7 +413,9 @@
   window.addEventListener("hashchange", () => {
     const key = window.location.hash.slice(1);
     if (datasets[key]) selectDataset(key);
+    if (key === "source-notes") $("#source-notes").open = true;
   });
+  $('.source-link[href="#source-notes"]').addEventListener("click", () => { $("#source-notes").open = true; });
   $("#search").addEventListener("input", (event) => { activeState().query = event.target.value; renderTable(); });
   $("#category").addEventListener("change", (event) => { activeState().category = event.target.value; renderTable(); });
   $("#reset-filters").addEventListener("click", resetFilters);
@@ -448,5 +439,6 @@
   try { savedTheme = localStorage.getItem("rimworld-field-notes-theme") || "dark"; } catch { /* Use default. */ }
   setTheme(savedTheme);
   const requestedDataset = window.location.hash.slice(1);
+  if (requestedDataset === "source-notes") $("#source-notes").open = true;
   selectDataset(datasets[requestedDataset] ? requestedDataset : "apparel");
 })();
