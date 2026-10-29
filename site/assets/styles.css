@@ -85,6 +85,7 @@ h1 { margin: 7px 0 8px; font-family: Georgia, "Times New Roman", serif; font-siz
 .dataset-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 24px 15px; background: transparent; color: var(--muted); position: relative; font-size: 13px; }
 .dataset-button .icon { width: 18px; height: 18px; }
 .dataset-button:hover { color: var(--text); background: var(--hover); }
+.dataset-link { margin-left: auto; text-decoration: none; }
 .dataset-button.active { color: var(--accent); }
 .dataset-button.active::after { content: ""; height: 2px; background: var(--accent); position: absolute; bottom: -1px; left: 0; right: 0; }
 .dataset-count { padding: 0 6px; border: 1px solid var(--line); border-radius: 4px; font-size: 10px; font-family: Consolas, monospace; color: var(--subtle); }

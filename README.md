@@ -8,6 +8,14 @@ The page has searchable, sortable tables, category filters, focused column views
 
 Link directly to the animals tables with `https://ttdow.github.io/rimworld-reference/#eggs` or `https://ttdow.github.io/rimworld-reference/#milk`.
 
+## Melee lab
+
+The separate [Melee lab](https://ttdow.github.io/rimworld-reference/melee.html) compares 567 wiki weapon/material/quality combinations and an unarmed human benchmark by median time to incapacitation. It offers editable pawn settings, unarmored/flak/marine target presets, seeded Monte Carlo trials, confidence intervals, timeout-aware percentiles, cumulative distributions, attack mixes, trial logs and CSV/JSON exports. Existing reference tables and their source data are independent of the simulator.
+
+This is an **experimental wiki-based injury model**, with no local game-data dependency. Bleeding, ongoing fire, retaliation and several special effects are omitted; capacity and hit propagation details include documented approximations. Read [the full specification and limitations](docs/melee-model.md) before interpreting rankings as gameplay predictions. Wiki-derived data and adapted descriptions are attributed to RimWorld Wiki contributors under CC BY-SA 3.0, with permanent revision links in the page.
+
+The simulator works from static files, using a Web Worker on HTTP(S) and a yielding fallback when workers are unavailable. Run the engine checks with `node --test tests/melee-engine.test.cjs`. Optional DOM integration tests require jsdom 30.1.3: `node tests/melee-ui.cjs [path/to/jsdom]`. GitHub Pages runs syntax and engine checks before deployment. To update the committed wiki snapshot, use `python scripts/import_melee_wiki.py --cache .qa/wiki`; a fresh cache downloads fresh pages. Review changes and retest before publishing.
+
 ## Preview
 
 Open `site/index.html` directly in a browser. The page needs no build, package installation, or network connection. Alternatively, run this from the project directory and open `http://127.0.0.1:8765`:

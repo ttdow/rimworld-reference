@@ -28,6 +28,12 @@ jobs:
         run: |
           node --check site/assets/data.js
           node --check site/assets/app.js
+          node --check site/assets/melee-data.js
+          node --check site/assets/melee-engine.js
+          node --check site/assets/melee-worker.js
+          node --check site/assets/melee-app.js
+      - name: Test the melee model
+        run: node --test tests/melee-engine.test.cjs
       - name: Configure this project's Pages deployment
         uses: actions/configure-pages@v5
       - name: Upload this site's files
