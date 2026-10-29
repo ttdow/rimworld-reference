@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <meta name="description" content="A reproducible, wiki-based Monte Carlo comparison of RimWorld melee weapons using time to incapacitation.">
-  <title>Melee lab · RimWorld Field Notes</title>
+  <title>Melee simulator · RimWorld Field Notes</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="stylesheet" href="./assets/styles.css">
   <link rel="stylesheet" href="./assets/melee.css">
@@ -14,86 +14,91 @@
   <script src="./assets/melee-app.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#lab">Skip to melee lab</a>
+  <a class="skip-link" href="#lab">Skip to simulator</a>
   <header class="site-header">
     <a class="brand" href="./"><span class="lab-mark" aria-hidden="true">✦</span><span><strong>RIMWORLD</strong><span class="brand-subtitle">FIELD NOTES</span></span></a>
     <div class="header-actions"><a class="source-link" href="./">Reference tables</a><button id="theme-toggle" class="text-button" type="button" aria-label="Switch to light theme">Light theme</button></div>
   </header>
   <main id="lab">
     <section class="page-intro lab-intro">
-      <div><p class="eyebrow">THE COLONY EXPERIMENTS <span class="lab-badge">EXPERIMENTAL</span></p><h1>Melee lab<span class="title-period">.</span></h1><p class="intro-copy">Same pawn. Same target. Thousands of possible fights.</p></div>
-      <p class="lab-objective">Compare weapons by <strong>median time to incapacitation</strong>.<br>Lower is faster. Downed and dead both count.</p>
+      <div><h1>Melee simulator</h1><p class="intro-copy">Median time to downing or death.</p></div>
     </section>
-    <aside class="model-notice"><strong>A wiki-based model, ready to explore.</strong> This prototype models body-part injuries, attack selection, armor, pain, and capacity loss. It omits bleeding, ongoing fire, and retaliation. Results are estimates within this model; close rankings need in-game validation. <a href="#method">Read the assumptions ↓</a></aside>
+    <aside class="model-notice">Experimental. Excludes bleeding, ongoing fire, and retaliation. <a href="#method">Model details</a></aside>
     <div class="lab-layout">
       <form id="sim-form" class="settings-panel">
         <fieldset id="settings">
           <legend class="sr-only">Simulation settings</legend>
-          <div class="settings-heading"><p class="eyebrow">01 / SET THE CONDITIONS</p><h2>Your experiment</h2></div>
+          <div class="settings-heading"><h2>Settings</h2></div>
           <div class="setting-section">
             <h3>Weapon pool</h3>
             <label>Weapon<select id="weapon"><option value="">All weapons</option></select></label>
             <div class="field-pair"><label>Quality<select id="quality"><option>Normal</option><option value="all">All qualities</option><option>Awful</option><option>Poor</option><option>Good</option><option>Excellent</option><option>Masterwork</option><option>Legendary</option></select></label><label>Material<select id="material"><option value="">All materials</option></select></label></div>
-            <p class="field-help">Items without quality or material stay in the pool.</p>
             <div class="check-row" role="group" aria-label="Enabled DLC"><label><input type="checkbox" id="dlc-Royalty" checked> Royalty</label><label><input type="checkbox" id="dlc-Anomaly" checked> Anomaly</label><label><input type="checkbox" id="dlc-Odyssey" checked> Odyssey</label></div>
-            <label class="check-label"><input type="checkbox" id="unarmed" checked> Include an unarmed human benchmark</label>
+            <label class="check-label"><input type="checkbox" id="unarmed" checked> Include unarmed</label>
             <p class="pool-count" id="pool-count" role="status"></p>
           </div>
           <div class="setting-section">
             <h3>Attacker</h3>
             <div class="field-pair"><label>Melee skill<input id="skill" type="number" min="0" max="20" step="1" value="10" required></label><label>Damage factor ×<input id="damageFactor" type="number" min="0.1" max="5" step="0.05" value="1" required></label></div>
-            <details class="advanced"><summary>More pawn settings</summary><div class="field-pair"><label>Manipulation ×<input id="manipulation" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Sight ×<input id="sight" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Skill offset<input id="skillOffset" type="number" min="-20" max="20" step="1" value="0" required></label><label>Cooldown factor ×<input id="cooldownFactor" type="number" min="0.1" max="5" step="0.05" value="1" required></label></div><p class="field-help">Brawler: +4 skill offset. A lower cooldown factor means faster swings. These settings stay fixed throughout a fight.</p></details>
+            <details class="advanced"><summary>Advanced</summary><div class="field-pair"><label>Manipulation ×<input id="manipulation" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Sight ×<input id="sight" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Skill offset<input id="skillOffset" type="number" min="-20" max="20" step="1" value="0" title="Brawler: +4" required></label><label>Cooldown factor ×<input id="cooldownFactor" type="number" min="0.1" max="5" step="0.05" value="1" title="Lower values mean faster attacks" required></label></div></details>
           </div>
           <div class="setting-section">
             <h3>Human target</h3>
             <label>Armor preset<select id="armor"><option value="none">Unarmored</option><option value="flak" selected>Flak vest + simple helmet</option><option value="marine">Marine armor + marine helmet</option></select></label>
             <p class="field-help" id="armor-description"></p>
             <div class="field-pair"><label>Melee skill<input id="targetSkill" type="number" min="0" max="20" step="1" value="8" required></label><label>Health scale ×<input id="healthScale" type="number" min="0.1" max="5" step="0.05" value="1" required></label></div>
-            <details class="advanced"><summary>More target settings</summary><div class="field-pair"><label>Initial moving ×<input id="targetMoving" type="number" min="0.2" max="2" step="0.05" value="1" required></label><label>Initial sight ×<input id="targetSight" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Dodge skill offset<input id="dodgeOffset" type="number" min="-20" max="30" step="1" value="0" required></label><label>Pain factor ×<input id="painFactor" type="number" min="0" max="3" step="0.05" value="1" required></label><label>Pain shock threshold<input id="painThreshold" type="number" min="0.1" max="2" step="0.05" value="0.8" required></label><label>Incoming damage ×<input id="incomingFactor" type="number" min="0.1" max="5" step="0.05" value="1" required></label></div><p class="field-help">Nimble: +15 dodge offset. Pain factor 0 disables pain; a threshold above 1 prevents pain shock. The target can dodge but never attacks.</p></details>
+            <details class="advanced"><summary>Advanced</summary><div class="field-pair"><label>Initial moving ×<input id="targetMoving" type="number" min="0.2" max="2" step="0.05" value="1" required></label><label>Initial sight ×<input id="targetSight" type="number" min="0.1" max="2" step="0.05" value="1" required></label><label>Dodge skill offset<input id="dodgeOffset" type="number" min="-20" max="30" step="1" value="0" title="Nimble: +15" required></label><label>Pain factor ×<input id="painFactor" type="number" min="0" max="3" step="0.05" value="1" title="0 disables pain" required></label><label>Pain shock threshold<input id="painThreshold" type="number" min="0.1" max="2" step="0.05" value="0.8" title="Values above 1 prevent pain shock" required></label><label>Incoming damage ×<input id="incomingFactor" type="number" min="0.1" max="5" step="0.05" value="1" required></label></div></details>
           </div>
           <div class="setting-section">
             <h3>Sampling</h3>
-            <div class="field-pair"><label>Trials per variant<select id="trials"><option value="100">100 · quick check</option><option value="1000" selected>1,000 · explore</option><option value="5000">5,000 · refine</option><option value="10000">10,000 · refine</option></select></label><label>Time limit (s)<input id="limit" type="number" min="10" max="300" step="1" value="60" required></label><label>Probability at (s)<input id="horizon" type="number" min="1" max="300" step="1" value="10" required></label><label>Random seed<input id="seed" type="text" maxlength="100" value="colony-1" required autocomplete="off" spellcheck="false"></label></div>
-            <p class="field-help">Same seed and settings reproduce each trial. Unfinished fights remain in the statistics.</p>
+            <div class="field-pair"><label>Trials per variant<select id="trials"><option value="100">100</option><option value="1000" selected>1,000</option><option value="5000">5,000</option><option value="10000">10,000</option></select></label><label>Time limit (s)<input id="limit" type="number" min="10" max="300" step="1" value="60" required></label><label>Probability at (s)<input id="horizon" type="number" min="1" max="300" step="1" value="10" required></label><label>Random seed<input id="seed" type="text" maxlength="100" value="colony-1" title="Same seed and settings reproduce the trials" required autocomplete="off" spellcheck="false"></label></div>
           </div>
         </fieldset>
-        <div class="run-controls"><button class="run-button" id="run" type="submit">Run comparison <span aria-hidden="true">→</span></button><button id="cancel" class="text-button" type="button" hidden>Stop run</button><p id="form-error" class="form-error" role="alert" hidden></p></div>
+        <div class="run-controls"><button class="run-button" id="run" type="submit">Run</button><button id="cancel" class="text-button" type="button" hidden>Stop</button><p id="form-error" class="form-error" role="alert" hidden></p></div>
       </form>
       <div class="results-column">
         <section class="run-panel" aria-labelledby="run-title">
-          <div class="run-topline"><div><p class="eyebrow">02 / COMPARE THE OUTCOMES</p><h2 id="run-title">Results</h2></div><span id="run-badge" class="status-badge">READY</span></div>
-          <p id="run-description">Choose the conditions and run a comparison. Each trial starts with a fresh target and the first swing at 0 seconds.</p>
+          <div class="run-topline"><h2 id="run-title">Results</h2><span id="run-badge" class="status-badge">READY</span></div>
+          <p id="run-description" hidden></p>
           <progress id="run-progress" value="0" max="100" aria-label="Comparison progress" hidden></progress>
-          <p id="run-status" role="status" aria-live="polite">No simulations run yet.</p>
-          <div class="run-metrics"><div><span>Variants completed</span><strong id="metric-variants">—</strong></div><div><span>Trials simulated</span><strong id="metric-trials">—</strong></div><div><span>Fastest model median</span><strong id="metric-median">—</strong></div></div>
+          <p id="run-status" role="status" aria-live="polite"></p>
+          <div class="run-metrics"><div><span>Variants</span><strong id="metric-variants">—</strong></div><div><span>Trials</span><strong id="metric-trials">—</strong></div><div><span>Lowest median</span><strong id="metric-median">—</strong></div></div>
         </section>
         <section class="reference-panel lab-results" aria-label="Weapon comparison">
           <div class="lab-table-toolbar"><label class="lab-search"><span class="sr-only">Search completed results</span><input type="search" id="result-search" placeholder="Search weapon, material, quality…" autocomplete="off"></label><button type="button" class="text-button" id="export-csv" disabled>CSV ↓</button><button type="button" class="text-button" id="export-json" disabled>Run JSON ↓</button></div>
-          <p class="table-explainer">Median and 95% confidence interval in seconds. Intervals measure sampling uncertainty within this model. Select a weapon for its distribution and attack mix.</p>
           <div class="table-scroll" role="region" aria-label="Simulation results; scroll for more columns" tabindex="0">
-            <table id="results-table"><caption class="sr-only">Melee weapon comparison, initially sorted by median time to incapacitation, fastest first. Not reached means the requested percentile exceeds the time limit.</caption><thead><tr><th scope="col" data-sort="weapon" aria-sort="none"><button type="button">Weapon / variation ↕</button></th><th scope="col" data-sort="median" aria-sort="ascending"><button type="button">Median (s) ↑</button></th><th scope="col">95% median CI</th><th scope="col" data-sort="p10" aria-sort="none"><button type="button">P10 (s) ↕</button></th><th scope="col" data-sort="p90" aria-sort="none"><button type="button">P90 (s) ↕</button></th><th scope="col" data-sort="byHorizon" aria-sort="none"><button type="button" id="horizon-heading">Down/dead by 10s ↕</button></th><th scope="col" data-sort="deathFraction" aria-sort="none"><button type="button">Dead first ↕</button></th><th scope="col" data-sort="censored" aria-sort="none"><button type="button">Timeouts ↕</button></th></tr></thead><tbody id="results-body"></tbody></table>
+            <table id="results-table"><caption class="sr-only">Melee weapon comparison, initially sorted by median time to incapacitation, fastest first. Not reached means the requested percentile exceeds the time limit.</caption><thead><tr><th scope="col" data-sort="weapon" aria-sort="none"><button type="button">Weapon / variation ↕</button></th><th scope="col" data-sort="median" aria-sort="ascending"><button type="button">Median (s) ↑</button></th><th scope="col" title="95% confidence interval for the model median; sampling uncertainty only">95% CI (s)</th><th scope="col" data-sort="p10" aria-sort="none"><button type="button">P10 (s) ↕</button></th><th scope="col" data-sort="p90" aria-sort="none"><button type="button">P90 (s) ↕</button></th><th scope="col" data-sort="byHorizon" aria-sort="none"><button type="button" id="horizon-heading">Down/dead by 10s ↕</button></th><th scope="col" data-sort="deathFraction" aria-sort="none"><button type="button">Dead first ↕</button></th><th scope="col" data-sort="censored" aria-sort="none"><button type="button">Timeouts ↕</button></th></tr></thead><tbody id="results-body"></tbody></table>
           </div>
-          <div id="results-empty" class="lab-empty"><span aria-hidden="true">⚔</span><h3>Your next loadout starts here.</h3><p>Run the model to compare weapon variations against one consistent target.</p></div>
-          <div class="table-footer"><span id="results-count">0 results</span><span>Lower median = faster incapacitation</span></div>
+          <div id="results-empty" class="lab-empty">No results.</div>
+          <div class="table-footer"><span id="results-count">0 results</span></div>
         </section>
         <section id="variant-detail" class="variant-panel" aria-labelledby="variant-title" hidden>
-          <div class="run-topline"><div><p class="eyebrow">03 / LOOK CLOSER</p><h2 id="variant-title"></h2></div><a id="variant-source" target="_blank" rel="noopener noreferrer">Wiki ↗</a></div>
+          <div class="run-topline"><h2 id="variant-title"></h2><a id="variant-source" target="_blank" rel="noopener noreferrer">Wiki ↗</a></div>
           <p id="variant-subtitle"></p><p id="variant-special" class="special-note" hidden></p>
-          <h3>Cumulative incapacitation</h3><p class="field-help">Share of all trials downed or dead by each time. The final gap to 100% contains the timeouts.</p>
+          <h3>Cumulative incapacitation (%)</h3>
           <svg id="distribution" viewBox="0 0 680 220" role="img" aria-labelledby="chart-title chart-description"><title id="chart-title">Cumulative incapacitation over time</title><desc id="chart-description"></desc></svg>
           <p id="variant-probabilities"></p>
           <h3>Attack mix</h3><div class="mix-scroll"><table class="attack-mix"><thead><tr><th scope="col">Attack</th><th scope="col">Damage</th><th scope="col">AP</th><th scope="col">Cooldown</th><th scope="col">Selection</th></tr></thead><tbody id="attack-mix"></tbody></table></div>
-          <details class="trial-example"><summary>Inspect one reproducible trial</summary><div class="example-controls"><label>Trial number<input type="number" id="example-number" min="1" max="1000" value="1" step="1"></label><button class="text-button" type="button" id="example-show">Show trial</button></div><p id="example-summary"></p><ol id="example-log"></ol></details>
+          <details class="trial-example"><summary>Trial log</summary><div class="example-controls"><label>Trial<input type="number" id="example-number" min="1" max="1000" value="1" step="1"></label><button class="text-button" type="button" id="example-show">Show</button></div><p id="example-summary"></p><ol id="example-log"></ol></details>
         </section>
       </div>
     </div>
-    <section class="method-panel" id="method" aria-labelledby="method-title">
-      <p class="eyebrow">BEFORE YOU PICK A WINNER</p><h2 id="method-title">What the model knows</h2>
-      <div class="method-grid"><div><h3>The comparison</h3><p>A healthy adult human begins each fight with the same starting settings. The attacker stays in range; the target dodges but never retaliates. Time starts with a ready attack at <strong>0 s</strong>, so a one-swing incapacitation takes 0 s. The fight ends at the first death, pain shock, consciousness below 30%, or moving at or below 15%. Temporary stun is not an endpoint.</p><p>“Dead first” is the fraction of <em>all trials</em> that end in death before downing. It does not predict eventual survival after downing. The model has no storyteller death-on-down roll.</p></div><div><h3>The wiki inputs</h3><p id="snapshot-description"></p><p>Attack selection uses the wiki’s Best/Mid/Worst rule, including natural attacks. Damage varies from 80–120%. Layered armor rolls can block damage or halve it and convert sharp damage to blunt. Injuries affect part HP, pain, movement, and consciousness; dodge changes as the target is injured.</p><p>All target apparel is Normal quality at fixed protection. Flak and marine presets include a cloth button-down shirt and pants. Fingers and feet remain exposed. A steel simple helmet leaves the face exposed.</p></div><div><h3>Where this is approximate</h3><p><strong>No bleeding progression, healing, ongoing fire, movement, retaliation, armor degradation, implants, genes, persona traits, or procedural unique weapons.</strong> Plasma swords include a simplified direct heat proc; fire and panic are omitted, so their ranking is incomplete. EMP has no effect on this natural human. Beer and wood do not break or get consumed.</p><p>Capacity aggregation, missing-part pain, adjacent hit selection, and fractional damage are approximations. Scratch behavior is itself marked uncertain on the wiki. Brain-scar pain and game tick rounding are omitted. Confidence intervals cannot account for these model differences.</p></div><div><h3>Read the statistics</h3><p>Unfinished trials are right-censored at the selected time limit. Percentiles include every trial. <strong>Not reached</strong> means too few targets were incapacitated to observe that percentile. Median intervals use binomial order-statistic bounds; probability intervals use Wilson bounds, both at 95%.</p><p>Use a small run to explore, then increase trials for a narrow weapon pool. Overlapping intervals call for more evidence. Different armor presets are separate experiments; this page does not combine them into an overall winner.</p><p><a href="https://github.com/ttdow/rimworld-reference/blob/main/docs/melee-model.md" target="_blank" rel="noopener noreferrer">Full model specification &amp; limitations ↗</a></p></div></div>
-      <details class="source-revisions"><summary>Wiki sources and snapshot revisions</summary><p>Data adapted from <a href="https://rimworldwiki.com/wiki/Weapon_Guide">Weapon Guide</a> and the RimWorld Wiki pages below, by their contributors, under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. The imported data and adapted rule descriptions retain that license. This is an unofficial tool.</p><ul id="source-list"></ul></details>
-    </section>
-    <noscript><p class="noscript-message">Enable JavaScript to run the simulator. The existing reference tables still offer downloadable source files.</p></noscript>
+    <details class="method-panel" id="method">
+      <summary>Model and sources</summary>
+      <p id="snapshot-description"></p>
+      <ul>
+        <li>First swing: 0 s. Each trial starts with a fresh human target.</li>
+        <li>Incapacitation: death, pain shock, consciousness &lt;30%, or moving ≤15%. Stun does not count.</li>
+        <li>Timeouts remain in all percentiles. “Not reached” means the percentile exceeds the time limit.</li>
+        <li>95% intervals measure sampling uncertainty, not model accuracy.</li>
+        <li>“Dead first” counts deaths before downing, divided by all trials.</li>
+        <li>Fixed items ignore quality/material filters.</li>
+      </ul>
+      <p><a href="https://github.com/ttdow/rimworld-reference/blob/main/docs/melee-model.md" target="_blank" rel="noopener noreferrer">Full model specification and limitations ↗</a></p>
+      <details class="source-revisions"><summary>Wiki revisions</summary><p>RimWorld Wiki contributors · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></p><ul id="source-list"></ul></details>
+    </details>
+    <noscript><p class="noscript-message">JavaScript is required.</p></noscript>
   </main>
-  <footer class="site-footer"><span>RimWorld Field Notes · Melee lab</span><span>Unofficial personal reference. RimWorld is by Ludeon Studios.</span></footer>
+  <footer class="site-footer"><span>RimWorld Field Notes</span><span>Unofficial. RimWorld is by Ludeon Studios.</span></footer>
 </body>
 </html>

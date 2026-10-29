@@ -14,8 +14,9 @@
   function option(select, value, label = value) { const el = document.createElement("option"); el.value = value; el.textContent = label; select.append(el); }
   [...new Set(D.variants.map(v => v.weapon))].sort().forEach(v => option($("weapon"), v));
   [...new Set(D.variants.map(v => v.material))].filter(v => v !== "None").sort().forEach(v => option($("material"), v));
-  $("snapshot-description").textContent = `${D.variants.length} literal weapon/material/quality combinations from 24 wiki weapon pages, plus a natural human benchmark. Snapshot: ${D.snapshotDate}. Only combinations present in the source tables are offered. Implants and unique weapons are outside this version.`;
+  $("snapshot-description").textContent = `${D.variants.length} weapon variants · 24 weapons · Wiki snapshot: ${D.snapshotDate}.`;
   $("source-list").innerHTML = D.sources.map(s => `<li><a href="${escape(s.snapshotUrl)}" target="_blank" rel="noopener noreferrer">${escape(s.title)}</a> · revision ${s.revision}</li>`).join("");
+  document.querySelector('a[href="#method"]').addEventListener("click", () => { $("method").open = true; });
   function theme(value) {
     document.documentElement.dataset.theme = value;
     $("theme-toggle").textContent = value === "dark" ? "Light theme" : "Dark theme";
@@ -38,8 +39,8 @@
   function settingsChanged() {
     const n = pool().length, count = n * Number($("trials").value);
     $("pool-count").textContent = `${fmt(n)} variations · ${fmt(count)} total trials`;
-    $("armor-description").textContent = $("armor").value === "none" ? "No apparel or natural armor." : $("armor").value === "flak" ? "Normal flak vest, steel simple helmet, cloth shirt and pants. Face, hands and feet exposed." : "Normal marine armor and helmet, cloth shirt and pants. Hands and feet exposed.";
-    if (run && !running) { $("run-badge").textContent = "SETTINGS CHANGED"; $("run-status").textContent = "Displayed results use the previous run settings. Run again to apply changes."; }
+    $("armor-description").textContent = $("armor").value === "none" ? "No armor." : $("armor").value === "flak" ? "Normal quality; steel helmet; cloth shirt and pants." : "Normal quality; cloth shirt and pants.";
+    if (run && !running) { $("run-badge").textContent = "SETTINGS CHANGED"; $("run-status").textContent = "Results use the previous settings."; }
   }
   $("settings").addEventListener("input", settingsChanged);
   $("settings").addEventListener("change", settingsChanged);
@@ -62,8 +63,8 @@
       return `<tr${selected === r.id ? ' class="selected-variant"' : ""}><td><button class="variant-button" type="button" data-id="${escape(v.id)}" aria-expanded="${selected === r.id}">${escape(v.weapon)}<small>${escape(v.material === "None" ? "No material variation" : v.material)} · ${escape(v.quality === "Fixed" ? "No quality variation" : v.quality)}</small></button></td><td>${value(s.median)}</td><td>${interval(s.medianCI, c.limit)}</td><td>${value(s.p10)}</td><td>${value(s.p90)}</td><td title="95% CI: ${s.horizonCI.map(pct).join('–')}">${pct(s.byHorizon)}</td><td title="95% CI: ${s.deathCI.map(pct).join('–')}">${pct(s.deathFraction)}</td><td>${fmt(s.censored)} / ${fmt(s.n)}</td></tr>`;
     }).join("");
     $("results-empty").hidden = rows.length > 0;
-    if (results.size > 0 && !rows.length) $("results-empty").innerHTML = "<h3>No matching results</h3><p>Try a different weapon, material, or quality.</p>";
-    else if (!results.size && run) $("results-empty").innerHTML = "<h3>Waiting for the first result</h3><p>Completed variations will appear here.</p>";
+    if (results.size > 0 && !rows.length) $("results-empty").textContent = "No matching results.";
+    else if (!results.size && run) $("results-empty").textContent = running ? "Running…" : "No completed results.";
     $("results-count").textContent = `${fmt(rows.length)} shown / ${fmt(results.size)} completed`;
     $("export-csv").disabled = !rows.length;
     $("export-json").disabled = !results.size;
@@ -103,7 +104,7 @@
     $("variant-title").textContent = v.weapon;
     $("variant-subtitle").textContent = `${v.material === "None" ? "No material variation" : v.material} · ${v.quality === "Fixed" ? "No quality variation" : v.quality} · ${fmt(s.n)} trials · Median: ${seconds(s.median)} · 95% CI: ${interval(s.medianCI, c.limit)} s`;
     $("variant-source").href = v.source;
-    const special = { plasma: "Incomplete special effect: 50% direct heat proc on successful blade strikes is included; ignition, ongoing fire and panic are omitted. Treat this comparison cautiously.", emp: "Physical strikes are modeled. EMP has no effect on this natural human target; implants and mechanoids require a different model.", improvised: "Improvised weapon durability and consumption are omitted. The weapon lasts throughout the trial." }[v.special];
+    const special = { plasma: "Direct heat only; ignition, ongoing fire, and panic omitted.", emp: "EMP has no effect on this target.", improvised: "Breakage and consumption omitted." }[v.special];
     $("variant-special").hidden = !special; $("variant-special").textContent = special || "";
     drawDistribution(r);
     $("variant-probabilities").textContent = `Down/dead by ${c.horizon}s: ${pct(s.byHorizon)} (95% CI ${s.horizonCI.map(pct).join("–")}). By ${c.limit}s: ${pct(s.incapacitation)} (95% CI ${s.incapacitationCI.map(pct).join("–")}). Dead first: ${pct(s.deathFraction)} (95% CI ${s.deathCI.map(pct).join("–")}). Timeouts: ${s.censored}.`;
@@ -116,7 +117,7 @@
     const trial = Number($("example-number").value);
     if (!Number.isInteger(trial) || trial < 1 || trial > run.config.trials) { $("example-summary").textContent = `Enter a trial from 1 to ${run.config.trials}.`; $("example-log").replaceChildren(); return; }
     const ctx = E.createContext(D, run.config, byId.get(selected)), result = E.simulateTrial(ctx, trial - 1, true);
-    $("example-summary").textContent = `Trial ${trial}: ${result.reason} ${result.time === null ? `at the ${run.config.limit}s limit` : `at ${result.time.toFixed(2)}s`}, ${result.swings} swings. The log shows at most 500 swings.`;
+    $("example-summary").textContent = `Trial ${trial} · ${result.reason} at ${result.time === null ? run.config.limit : result.time.toFixed(2)}s · ${result.swings} swings${result.swings > result.log.length ? " · First 500 shown" : ""}`;
     $("example-log").innerHTML = result.log.map(event => `<li><strong>${event.time.toFixed(2)}s · ${escape(event.attack)} · ${event.outcome}</strong>${event.injuries.length ? `<br>${event.injuries.map(i => `${escape(i.part)}: ${i.damage.toFixed(2)} ${i.type}${i.destroyed ? " (destroyed)" : ""}`).join("; ")}` : ""}<br>Pain ${pct(event.pain)} · Consciousness ${pct(event.consciousness)} · Moving ${pct(event.moving)}</li>`).join("");
   }
   $("example-show").addEventListener("click", showExample);
@@ -141,11 +142,11 @@
   }
   function done(current) {
     if (!running || current !== token) return;
-    finish("complete", `Completed ${fmt(run.ids.length * run.config.trials)} trials. Seed: ${run.config.seed}. Select a variation to inspect its results.`);
+    finish("complete", `${fmt(run.ids.length * run.config.trials)} trials completed.`);
   }
   async function fallback(current) {
     try {
-      $("run-status").textContent = "Using the local browser fallback. Comparisons run in small batches.";
+      $("run-status").textContent = "Running…";
       for (const id of run.ids) {
         const ctx = E.createContext(D, run.config, byId.get(id)), times = []; let deaths = 0;
         for (let trial = 0; trial < run.config.trials; trial++) {
@@ -166,8 +167,8 @@
     let config, chosen;
     try {
       config = readConfig(); chosen = pool();
-      if (!chosen.length) throw Error("The weapon pool is empty. Change the weapon, material, or DLC settings.");
-      if (chosen.length * config.trials > 2000000) throw Error("This run exceeds 2 million trials. Reduce the weapon pool or trial count, then refine a smaller pool.");
+      if (!chosen.length) throw Error("Weapon pool is empty. Change the filters.");
+      if (chosen.length * config.trials > 2000000) throw Error("Maximum: 2 million trials. Reduce variants or trials per variant.");
     } catch (error) { $("form-error").textContent = error.message; $("form-error").hidden = false; return; }
     $("form-error").hidden = true;
     token++; const current = token;
@@ -176,9 +177,10 @@
     $("settings").disabled = true; $("run").disabled = true; $("cancel").hidden = false;
     $("variant-detail").hidden = true;
     $("run-badge").textContent = "RUNNING"; $("run-progress").hidden = false; $("run-progress").value = 0;
-    $("run-description").textContent = `${config.armor === "none" ? "Unarmored" : config.armor === "flak" ? "Flak" : "Marine"} target · Attacker skill ${config.skill} · Target skill ${config.targetSkill} · ${fmt(config.trials)} trials/variation · ${config.limit}s limit · ${E.VERSION}`;
+    $("run-description").hidden = false;
+    $("run-description").textContent = `${config.armor === "none" ? "Unarmored" : config.armor === "flak" ? "Flak" : "Marine"} target · Attacker skill ${config.skill} · Target skill ${config.targetSkill} · ${fmt(config.trials)} trials/variant · ${config.limit}s limit`;
     $("horizon-heading").textContent = `Down/dead by ${config.horizon}s ↕`;
-    $("run-status").textContent = "Starting comparison…";
+    $("run-status").textContent = "Running…";
     render();
     try {
       if (typeof Worker === "undefined") throw Error("Worker unavailable");
@@ -193,7 +195,7 @@
         event.preventDefault();
         if (!running || current !== token) return;
         worker.terminate(); worker = null;
-        if (results.size) finish("error", "The worker stopped. Completed results are retained; rerun the comparison to finish.");
+        if (results.size) finish("error", "Run interrupted; completed results retained.");
         else fallback(current);
       };
       worker.postMessage({ config, ids: run.ids });
@@ -201,8 +203,7 @@
   });
   $("cancel").addEventListener("click", () => {
     if (!running) return;
-    token++; finish("stopped", `Stopped after ${fmt(results.size)} of ${fmt(run.ids.length)} variations. Results cover the completed subset only.`);
-    if (!results.size) $("results-empty").innerHTML = "<h3>Run stopped</h3><p>No variations completed. Adjust the conditions and run again.</p>";
+    token++; finish("stopped", `${fmt(results.size)} / ${fmt(run.ids.length)} variants completed.`);
   });
   function download(content, mime, name) {
     const url = URL.createObjectURL(new Blob([content], { type: mime })), a = document.createElement("a"); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
