@@ -60,6 +60,21 @@
       ],
     },
   };
+  copy.farming = {
+    countLabel: "crops",
+    placeholder: "Search crops…",
+    category: "Food",
+    categoryAll: "All foods",
+    views: [
+      ...[100, 70, 140, 280].map(fertility => ({
+        id: fertility === 100 ? "overview" : `fertility-${fertility}`,
+        label: `${fertility}% fertility`,
+        keys: ["name", "food", `growDays${fertility}`, `nutritionDay${fertility}`, `labourDay${fertility}`, "nutritionPerPawnHour"],
+      })),
+      { id: "harvest", label: "Harvest & labour", keys: ["name", "food", "displayedGrowDays", "harvestUnits", "foodNutrition", "harvestNutrition", "fertilitySensitivity", "sowingLabour", "harvestLabour", "totalLabour", "nutritionPerPawnHour"] },
+      { id: "all", label: "All columns", keys: datasets.farming.columns.map(column => column.key) },
+    ],
+  };
   const shortLabels = {
     name: "Name", layer: "Layer", category: "Category", sharp: "Sharp armor", blunt: "Blunt armor", heatArmor: "Heat armor",
     hp: "Hit points", coverage: "Coverage", coldMultiplier: "Cold insulation ×", coldBase: "Cold base (°C)",
@@ -79,7 +94,17 @@
     annualMilk: "Milk / 60-day year (units)", packAnimal: "Pack animal", packCapacity: "Pack capacity (kg)",
     caravanMount: "Caravan mount", minTemp: "Min comfortable (°C)", maxTemp: "Max comfortable (°C)",
     handlingSkill: "Min handling skill", maturityDays: "Maturity age (days)", wildness: "Wildness (%)", notes: "Notes",
+    food: "Harvested food", displayedGrowDays: "Displayed grow days", harvestUnits: "Units / tile / harvest",
+    foodNutrition: "Nutrition / unit", harvestNutrition: "Raw nutrition / tile / harvest",
+    fertilitySensitivity: "Fertility sensitivity", sowingLabour: "Sowing / tile / harvest (ticks)",
+    harvestLabour: "Harvesting / tile / harvest (ticks)", totalLabour: "Labour / tile / harvest (ticks)",
+    nutritionPerPawnHour: "Raw nutrition / pawn-hour (100% speed)",
   };
+  for (const fertility of [70, 100, 140, 280]) {
+    shortLabels[`growDays${fertility}`] = `Actual grow time @${fertility}% (days)`;
+    shortLabels[`nutritionDay${fertility}`] = `Raw nutrition / tile / day @${fertility}%`;
+    shortLabels[`labourDay${fertility}`] = `Labour / tile / day @${fertility}% (ticks)`;
+  }
   const state = { dataset: "apparel", tables: {} };
   for (const key of Object.keys(datasets)) {
     state.tables[key] = { query: "", category: "", filters: {}, view: "overview", sort: "name", direction: "asc" };
@@ -168,6 +193,8 @@
   }
 
   function labelFor(column) {
+    if (state.dataset === "farming" && column.key === "name") return "Crop";
+    if (state.dataset === "farming" && column.key === "sourceUrl") return "Crop wiki";
     if (["eggs", "milk"].includes(state.dataset) && column.key === "name") return "Animal";
     if (state.dataset === "textiles") {
       if (column.key === "hp") return "Max HP ×";
@@ -329,9 +356,10 @@
     $("#category").replaceChildren(...options);
     $("#category").value = current.category;
     $("#source-label").textContent = [data.source.file, data.source.sheet].filter(Boolean).join(" · ");
-    $("#equipment-data-notes").hidden = ["eggs", "milk"].includes(key);
+    $("#equipment-data-notes").hidden = !["apparel", "textiles"].includes(key);
     $("#egg-data-notes").hidden = key !== "eggs";
     $("#milk-data-notes").hidden = key !== "milk";
+    $("#farming-data-notes").hidden = key !== "farming";
     $("#table-scroll").setAttribute("aria-label", `${data.name} table; scroll for more columns`);
     $("#table-caption").textContent = `${data.name} from ${data.source.file}. Select a column heading to sort or an item name to see every field.`;
     renderExtraFilters();

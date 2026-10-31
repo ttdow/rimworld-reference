@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark light">
-    <meta name="description" content="Searchable RimWorld reference tables for apparel, textiles, egg-laying animals, and milk-producing animals. Compare equipment, food output, feed needs, and caravan roles.">
+    <meta name="description" content="Searchable RimWorld reference tables for apparel, textiles, egg-laying animals, milk-producing animals, and farming.">
     <title>Reference tables · RimWorld Field Notes</title>
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <link rel="stylesheet" href="./assets/styles.css">
@@ -19,6 +19,7 @@
       <symbol id="icon-textile" viewBox="0 0 24 24"><path d="M6 3h12v18H6zM3 7h18M3 12h18M3 17h18M10 3v18M14 3v18"/></symbol>
       <symbol id="icon-egg" viewBox="0 0 24 24"><path d="M20 14c0 4.5-3.6 7-8 7s-8-2.5-8-7S8.5 3 12 3s8 6.5 8 11Z"/><path d="M7 14c0 2.2 1.6 4 4 4"/></symbol>
       <symbol id="icon-milk" viewBox="0 0 24 24"><path d="M9 3h6v4l3 4v10H6V11l3-4V3ZM9 7h6M6 13h12"/></symbol>
+      <symbol id="icon-plant" viewBox="0 0 24 24"><path d="M12 21V10M12 15C5 15 3 11 3 5c6 0 9 3 9 10ZM12 11c0-6 3-9 9-9 0 6-3 9-9 9Z"/></symbol>
       <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
       <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
       <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.8 13.5A9 9 0 0 1 10.5 3.2a9 9 0 1 0 10.3 10.3Z"/></symbol>
@@ -49,6 +50,7 @@
         <button class="dataset-button" type="button" data-dataset="textiles" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-textile"/></svg>Textiles<span class="dataset-count" id="textiles-count">38</span></button>
         <button class="dataset-button" type="button" data-dataset="eggs" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-egg"/></svg>Egg-laying animals<span class="dataset-count" id="eggs-count">24</span></button>
         <button class="dataset-button" type="button" data-dataset="milk" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-milk"/></svg>Milk-producing animals<span class="dataset-count" id="milk-count">6</span></button>
+        <button class="dataset-button" type="button" data-dataset="farming" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-plant"/></svg>Farming<span class="dataset-count" id="farming-count">7</span></button>
         <a href="./melee.html" class="dataset-button dataset-link">Melee simulator <span aria-hidden="true">↗</span></a>
       </nav>
 
@@ -80,7 +82,8 @@
         <div class="notes-grid" id="equipment-data-notes"><p>Armor is unadjusted for material or quality. × = multiplier; °C = fixed temperature.</p></div>
         <div class="notes-grid" id="egg-data-notes" hidden><p>Maximum output per female; 60-day year. Female and breeder feed are separate. Male ratios are approximate. Male requirements refer to laying, not hatching. Percentages may exceed 100%.</p></div>
         <div class="notes-grid" id="milk-data-notes" hidden><p>Estimated output and feed per adult female; 60-day year. Feed efficiency and hay needs are not recalculated.</p></div>
-        <div class="source-downloads"><a href="./sources/Apparel.xlsx" download>Apparel.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/Textiles.xlsx" download>Textiles.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/rimworld_egg_laying_animals_comparison.csv" download>Eggs CSV<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/rimworld_milk_producing_animals_comparison.csv" download>Milk CSV<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a></div>
+        <div class="notes-grid" id="farming-data-notes" hidden><p>Displayed and actual grow times are separate. Blank 280% values remain blank.</p></div>
+        <div class="source-downloads"><a href="./sources/Apparel.xlsx" download>Apparel.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/Textiles.xlsx" download>Textiles.xlsx<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/rimworld_egg_laying_animals_comparison.csv" download>Eggs CSV<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/rimworld_milk_producing_animals_comparison.csv" download>Milk CSV<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a><a href="./sources/rimworld_raw_food_crop_productivity_revised.csv" download>Farming CSV<svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></a></div>
       </details>
       <noscript><p class="noscript-message">JavaScript is required for table controls.</p></noscript>
     </main>

@@ -3044,6 +3044,329 @@ window.RIMWORLD_DATA = {
           "sourceRow": 7
         }
       ]
+    },
+    "farming": {
+      "name": "Farming",
+      "nameKey": "name",
+      "categoryKey": "food",
+      "source": {
+        "file": "rimworld_raw_food_crop_productivity_revised.csv",
+        "format": "csv",
+        "sha256": "227cdaa4954bb9c3f2c20c791992422792e420d4edd8bddc417b115e9f09f49f"
+      },
+      "columns": [
+        {
+          "key": "name",
+          "label": "Crop",
+          "type": "text"
+        },
+        {
+          "key": "food",
+          "label": "Harvested food",
+          "type": "text"
+        },
+        {
+          "key": "displayedGrowDays",
+          "label": "Displayed grow days",
+          "type": "number"
+        },
+        {
+          "key": "harvestUnits",
+          "label": "Harvested units/tile/harvest",
+          "type": "number"
+        },
+        {
+          "key": "foodNutrition",
+          "label": "Nutrition/unit",
+          "type": "number"
+        },
+        {
+          "key": "harvestNutrition",
+          "label": "Raw nutrition/tile/harvest",
+          "type": "number"
+        },
+        {
+          "key": "fertilitySensitivity",
+          "label": "Fertility sensitivity",
+          "type": "number"
+        },
+        {
+          "key": "sowingLabour",
+          "label": "Sowing labour/tile/harvest (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "harvestLabour",
+          "label": "Harvesting labour/tile/harvest (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "totalLabour",
+          "label": "Total labour/tile/harvest (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "nutritionPerPawnHour",
+          "label": "Raw nutrition/pawn-hour (100% speed)",
+          "type": "number"
+        },
+        {
+          "key": "growDays70",
+          "label": "Actual grow time @70% fertility (days)",
+          "type": "number"
+        },
+        {
+          "key": "nutritionDay70",
+          "label": "Raw nutrition/tile/day @70%",
+          "type": "number"
+        },
+        {
+          "key": "labourDay70",
+          "label": "Labour/tile/day @70% (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "growDays100",
+          "label": "Actual grow time @100% fertility (days)",
+          "type": "number"
+        },
+        {
+          "key": "nutritionDay100",
+          "label": "Raw nutrition/tile/day @100%",
+          "type": "number"
+        },
+        {
+          "key": "labourDay100",
+          "label": "Labour/tile/day @100% (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "growDays140",
+          "label": "Actual grow time @140% fertility (days)",
+          "type": "number"
+        },
+        {
+          "key": "nutritionDay140",
+          "label": "Raw nutrition/tile/day @140%",
+          "type": "number"
+        },
+        {
+          "key": "labourDay140",
+          "label": "Labour/tile/day @140% (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "growDays280",
+          "label": "Actual grow time @280% fertility (days)",
+          "type": "number"
+        },
+        {
+          "key": "nutritionDay280",
+          "label": "Raw nutrition/tile/day @280%",
+          "type": "number"
+        },
+        {
+          "key": "labourDay280",
+          "label": "Labour/tile/day @280% (ticks)",
+          "type": "number"
+        },
+        {
+          "key": "sourceUrl",
+          "label": "Source URL",
+          "type": "url"
+        }
+      ],
+      "rows": [
+        {
+          "name": "Rice",
+          "food": "Rice",
+          "displayedGrowDays": 3.0,
+          "harvestUnits": 6.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.3,
+          "fertilitySensitivity": 1.0,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 2.02703,
+          "growDays70": 7.91209,
+          "nutritionDay70": 0.037917,
+          "labourDay70": 46.7639,
+          "growDays100": 5.53846,
+          "nutritionDay100": 0.054167,
+          "labourDay100": 66.8056,
+          "growDays140": 3.95604,
+          "nutritionDay140": 0.075833,
+          "labourDay140": 93.5278,
+          "growDays280": 1.97802,
+          "nutritionDay280": 0.151667,
+          "labourDay280": 187.0556,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Rice_plant",
+          "sourceRow": 2
+        },
+        {
+          "name": "Potato",
+          "food": "Potatoes",
+          "displayedGrowDays": 5.8,
+          "harvestUnits": 11.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.55,
+          "fertilitySensitivity": 0.4,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 3.71622,
+          "growDays70": 12.16783,
+          "nutritionDay70": 0.045201,
+          "labourDay70": 30.408,
+          "growDays100": 10.70769,
+          "nutritionDay100": 0.051365,
+          "labourDay100": 34.5546,
+          "growDays140": 9.23077,
+          "nutritionDay140": 0.059583,
+          "labourDay140": 40.0833,
+          "growDays280": 6.2254,
+          "nutritionDay280": 0.088348,
+          "labourDay280": 59.4339,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Potato_plant",
+          "sourceRow": 3
+        },
+        {
+          "name": "Corn",
+          "food": "Corn",
+          "displayedGrowDays": 11.3,
+          "harvestUnits": 22.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 1.1,
+          "fertilitySensitivity": 1.0,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 7.43243,
+          "growDays70": 29.8022,
+          "nutritionDay70": 0.03691,
+          "labourDay70": 12.4152,
+          "growDays100": 20.86154,
+          "nutritionDay100": 0.052729,
+          "labourDay100": 17.736,
+          "growDays140": 14.9011,
+          "nutritionDay140": 0.07382,
+          "labourDay140": 24.8304,
+          "growDays280": null,
+          "nutritionDay280": null,
+          "labourDay280": null,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Corn_plant",
+          "sourceRow": 4
+        },
+        {
+          "name": "Strawberry",
+          "food": "Berries",
+          "displayedGrowDays": 4.6,
+          "harvestUnits": 8.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.4,
+          "fertilitySensitivity": 1.0,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 2.7027,
+          "growDays70": 12.13187,
+          "nutritionDay70": 0.032971,
+          "labourDay70": 30.4982,
+          "growDays100": 8.49231,
+          "nutritionDay100": 0.047101,
+          "labourDay100": 43.5688,
+          "growDays140": 6.06593,
+          "nutritionDay140": 0.065942,
+          "labourDay140": 60.9964,
+          "growDays280": 3.03297,
+          "nutritionDay280": 0.131884,
+          "labourDay280": 121.9928,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Strawberry_plant",
+          "sourceRow": 5
+        },
+        {
+          "name": "Haygrass",
+          "food": "Hay",
+          "displayedGrowDays": 7.0,
+          "harvestUnits": 18.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.9,
+          "fertilitySensitivity": 0.6,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 6.08108,
+          "growDays70": 15.75985,
+          "nutritionDay70": 0.057107,
+          "labourDay70": 23.4774,
+          "growDays100": 12.92308,
+          "nutritionDay100": 0.069643,
+          "labourDay100": 28.631,
+          "growDays140": 10.42184,
+          "nutritionDay140": 0.086357,
+          "labourDay140": 35.5024,
+          "growDays280": null,
+          "nutritionDay280": null,
+          "labourDay280": null,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Haygrass",
+          "sourceRow": 6
+        },
+        {
+          "name": "Nutrifungus",
+          "food": "Raw fungus",
+          "displayedGrowDays": 6.0,
+          "harvestUnits": 11.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.55,
+          "fertilitySensitivity": 0.15,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 3.71622,
+          "growDays70": 11.59887,
+          "nutritionDay70": 0.047418,
+          "labourDay70": 31.8997,
+          "growDays100": 11.07692,
+          "nutritionDay100": 0.049653,
+          "labourDay100": 33.4028,
+          "growDays140": 10.44993,
+          "nutritionDay140": 0.052632,
+          "labourDay140": 35.4069,
+          "growDays280": 8.72199,
+          "nutritionDay280": 0.063059,
+          "labourDay280": 42.4215,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Nutrifungus",
+          "sourceRow": 7
+        },
+        {
+          "name": "Toxipotato",
+          "food": "Toxipotatoes",
+          "displayedGrowDays": 4.9,
+          "harvestUnits": 7.0,
+          "foodNutrition": 0.05,
+          "harvestNutrition": 0.35,
+          "fertilitySensitivity": 0.0,
+          "sowingLabour": 170.0,
+          "harvestLabour": 200.0,
+          "totalLabour": 370.0,
+          "nutritionPerPawnHour": 2.36486,
+          "growDays70": 9.04615,
+          "nutritionDay70": 0.03869,
+          "labourDay70": 40.9014,
+          "growDays100": 9.04615,
+          "nutritionDay100": 0.03869,
+          "labourDay100": 40.9014,
+          "growDays140": 9.04615,
+          "nutritionDay140": 0.03869,
+          "labourDay140": 40.9014,
+          "growDays280": 9.04615,
+          "nutritionDay280": 0.03869,
+          "labourDay280": 40.9014,
+          "sourceUrl": "https://rimworldwiki.com/wiki/Toxipotato_plant",
+          "sourceRow": 8
+        }
+      ]
     }
   }
 };

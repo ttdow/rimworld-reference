@@ -1,12 +1,14 @@
 # RimWorld Field Notes
 
-A static GitHub Pages reference for apparel, textiles, egg-laying animals, and milk-producing animals, populated from the original workbooks and CSVs in this directory.
+A static GitHub Pages reference for apparel, textiles, egg-laying animals, milk-producing animals, and farming, populated from the original workbooks and CSVs in this directory.
 
 Live site: https://ttdow.github.io/rimworld-reference/
 
 The page has searchable, sortable tables, category filters, focused column views, every original column, item details, a light/dark theme, and CSV export of the filtered records. Searches cover every field, including fields outside the selected column view. Empty source cells remain empty; no material or quality calculations are added. The egg-laying animals table also filters by game content and male requirements. The milk-producing animals table filters by pack-animal and caravan-mount roles, with focused views for milk/feed and climate/caravans. Both retain the supplied production and feed-efficiency estimates with clickable wiki sources.
 
 Link directly to the animals tables with `https://ttdow.github.io/rimworld-reference/#eggs` or `https://ttdow.github.io/rimworld-reference/#milk`.
+
+The [Farming table](https://ttdow.github.io/rimworld-reference/#farming) preserves all 24 columns from `rimworld_raw_food_crop_productivity_revised.csv`, with views for 70%, 100%, 140%, and 280% fertility, harvest/labour details, food filtering, and CSV export. Supplied values and blanks are retained; productivity is not recalculated.
 
 ## Melee lab
 
@@ -26,7 +28,7 @@ python -m http.server 8765 --bind 127.0.0.1 --directory site
 
 ## Update the data
 
-Update `Apparel.xlsx`, `Textiles.xlsx`, `rimworld_egg_laying_animals_comparison.csv`, or `rimworld_milk_producing_animals_comparison.csv`, then run:
+Update `Apparel.xlsx`, `Textiles.xlsx`, `rimworld_egg_laying_animals_comparison.csv`, `rimworld_milk_producing_animals_comparison.csv`, or `rimworld_raw_food_crop_productivity_revised.csv`, then run:
 
 ```powershell
 python -m pip install openpyxl
