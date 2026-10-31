@@ -33,6 +33,7 @@
     eggs: {
       countLabel: "animals",
       placeholder: "Search animals…",
+      omittedColumns: ["content"],
       category: "Diet",
       categoryAll: "All diets",
       filters: [
@@ -40,23 +41,30 @@
         { key: "maleRequired", label: "Male for egg output", all: "Either" },
       ],
       views: [
-        { id: "overview", label: "Overview", keys: ["name", "content", "diet", "maleRequired", "eggsPerDay", "nutritionPerDay", "breederEfficiency", "annualEggs"] },
+        { id: "overview", label: "Overview", keys: ["name", "diet", "maleRequired", "eggsPerDay", "nutritionPerDay", "breederEfficiency", "annualEggs"] },
         { id: "production", label: "Egg production", keys: ["name", "unfertilized", "maleRequired", "eggNutrition", "clutch", "intervalDays", "eggsPerDay", "nutritionPerDay", "annualEggs"] },
         { id: "breeding", label: "Feed & breeding", keys: ["name", "diet", "femaleFeed", "femaleEfficiency", "malesPerFemale", "breederEfficiency"] },
-        { id: "all", label: "All columns", keys: datasets.eggs.columns.map((column) => column.key) },
+        { id: "all", label: "All columns", keys: datasets.eggs.columns.map((column) => column.key).filter(key => key !== "content") },
       ],
     },
     milk: {
       countLabel: "animals",
       placeholder: "Search animals…",
-      category: "Pack animal",
-      categoryAll: "Either",
-      filters: [{ key: "caravanMount", label: "Caravan mount", all: "Either" }],
+      category: null,
+      categoryAll: "All",
+      omittedColumns: ["packAnimal", "packCapacity", "caravanMount"],
+      columnLabels: { milkPerDay: "Milk / day" },
+      noteEdits: {
+        "Cold-adapted; wild herds; no caravan cargo capacity.": "Cold-adapted; wild herds.",
+        "Pack animal and caravan mount; well suited to hot environments.": "Well suited to hot environments.",
+        "Cold-adapted; difficult to tame; no caravan cargo capacity.": "Cold-adapted; difficult to tame.",
+        "Cold-hardy pack animal; useful dual-purpose choice for a mountainhold.": "Cold-hardy; useful choice for a mountainhold.",
+      },
       views: [
-        { id: "overview", label: "Overview", keys: ["name", "milkPerDay", "milkNutritionPerDay", "femaleFeed", "milkFeedEfficiency", "hay30Days", "packAnimal", "caravanMount"] },
+        { id: "overview", label: "Overview", keys: ["name", "milkPerDay", "milkNutritionPerDay", "femaleFeed", "milkFeedEfficiency", "hay30Days"] },
         { id: "production", label: "Milk & feed", keys: ["name", "milkPerMilking", "milkingInterval", "milkPerDay", "milkNutritionPerDay", "femaleFeed", "milkFeedEfficiency", "milkUnitsPerFeed", "hayPerDay", "hay30Days", "annualMilk"] },
-        { id: "husbandry", label: "Climate & caravans", keys: ["name", "content", "diet", "packAnimal", "packCapacity", "caravanMount", "minTemp", "maxTemp", "handlingSkill", "maturityDays", "wildness"] },
-        { id: "all", label: "All columns", keys: datasets.milk.columns.map((column) => column.key) },
+        { id: "husbandry", label: "Climate", keys: ["name", "content", "diet", "minTemp", "maxTemp", "handlingSkill", "maturityDays", "wildness"] },
+        { id: "all", label: "All columns", keys: datasets.milk.columns.map((column) => column.key).filter(key => !["packAnimal", "packCapacity", "caravanMount"].includes(key)) },
       ],
     },
   };
@@ -65,10 +73,15 @@
     placeholder: "Search crops…",
     category: "Food",
     categoryAll: "All foods",
+    columnLabels: {
+      growDays280: "Actual grow time in Hydroponics (days)",
+      nutritionDay280: "Raw nutrition / tile / day in Hydroponics",
+      labourDay280: "Labour / tile / day in Hydroponics (ticks)",
+    },
     views: [
       ...[100, 70, 140, 280].map(fertility => ({
         id: fertility === 100 ? "overview" : `fertility-${fertility}`,
-        label: `${fertility}% fertility`,
+        label: fertility === 280 ? "Hydroponics" : `${fertility}% fertility`,
         keys: ["name", `growDays${fertility}`, `nutritionDay${fertility}`, `labourDay${fertility}`, "nutritionPerPawnHour"],
       })),
       { id: "harvest", label: "Harvest & labour", keys: ["name", "displayedGrowDays", "harvestUnits", "foodNutrition", "harvestNutrition", "fertilitySensitivity", "sowingLabour", "harvestLabour", "totalLabour", "nutritionPerPawnHour"] },
@@ -88,11 +101,10 @@
     femaleEfficiency: "Egg nutrition / female feed (%)", malesPerFemale: "Males / female (approx.)", breederEfficiency: "Egg nutrition / breeder feed (%)",
     annualEggs: "Eggs / 60-day year (max)", wikiUrl: "Species wiki", sourceUrl: "Data source",
     adultFemales: "Milk from adult females", milkMaleRequired: "Male for milk", milkPerMilking: "Milk / milking (units)",
-    milkingInterval: "Milking interval (days)", milkPerDay: "Milk / day (units)", milkNutrition: "Nutrition / milk unit",
+    milkingInterval: "Milking interval (days)", milkPerDay: "Milk / day", milkNutrition: "Nutrition / milk unit",
     milkNutritionPerDay: "Milk nutrition / day (max)", milkFeedEfficiency: "Milk nutrition / female feed (%)",
     milkUnitsPerFeed: "Milk units / feed nutrition", hayPerDay: "Hay equivalent / day (units)", hay30Days: "Hay / 30 days (units)",
-    annualMilk: "Milk / 60-day year (units)", packAnimal: "Pack animal", packCapacity: "Pack capacity (kg)",
-    caravanMount: "Caravan mount", minTemp: "Min comfortable (°C)", maxTemp: "Max comfortable (°C)",
+    annualMilk: "Milk / 60-day year (units)", minTemp: "Min comfortable (°C)", maxTemp: "Max comfortable (°C)",
     handlingSkill: "Min handling skill", maturityDays: "Maturity age (days)", wildness: "Wildness (%)", notes: "Notes",
     food: "Harvested food", displayedGrowDays: "Displayed grow days", harvestUnits: "Units / tile / harvest",
     foodNutrition: "Nutrition / unit", harvestNutrition: "Raw nutrition / tile / harvest",
@@ -100,7 +112,7 @@
     harvestLabour: "Harvesting / tile / harvest (ticks)", totalLabour: "Labour / tile / harvest (ticks)",
     nutritionPerPawnHour: "Raw nutrition / pawn-hour (100% speed)",
   };
-  for (const fertility of [70, 100, 140, 280]) {
+  for (const fertility of [70, 100, 140]) {
     shortLabels[`growDays${fertility}`] = `Actual grow time @${fertility}% (days)`;
     shortLabels[`nutritionDay${fertility}`] = `Raw nutrition / tile / day @${fertility}%`;
     shortLabels[`labourDay${fertility}`] = `Labour / tile / day @${fertility}% (ticks)`;
@@ -117,7 +129,10 @@
   const isNumericColumn = (column) => ["number", "multiplier", "temperature", "percent"].includes(column.type);
   const hasFilters = () => Boolean(activeState().query || activeState().category || Object.values(activeState().filters).some(Boolean));
   const normalize = (value) => String(value).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const sourceColumns = () => new Map(activeData().columns.map((column) => [column.key, column]));
+  const activeColumns = () => activeData().columns
+    .filter(column => !(copy[state.dataset].omittedColumns || []).includes(column.key))
+    .map(column => ({ ...column, label: copy[state.dataset].columnLabels?.[column.key] || column.label }));
+  const sourceColumns = () => new Map(activeColumns().map((column) => [column.key, column]));
 
   function materialSummary(row) {
     const parts = [];
@@ -132,6 +147,8 @@
   }
 
   function fieldValue(row, key) {
+    const noteEdits = copy[state.dataset].noteEdits;
+    if (key === "notes" && noteEdits && Object.hasOwn(noteEdits, row[key])) return noteEdits[row[key]];
     return key === "materials" ? materialSummary(row) : row[key];
   }
 
@@ -168,10 +185,11 @@
     const data = activeData();
     const current = activeState();
     const terms = normalize(current.query).trim().split(/\s+/).filter(Boolean);
+    const searchableColumns = activeColumns();
     const rows = data.rows.filter((row) => {
       if (current.category && row[data.categoryKey] !== current.category) return false;
       if (Object.entries(current.filters).some(([key, value]) => value && row[key] !== value)) return false;
-      const text = normalize(data.columns.map((column) => row[column.key] ?? "").join(" "));
+      const text = normalize(searchableColumns.map((column) => fieldValue(row, column.key) ?? "").join(" "));
       return terms.every((term) => text.includes(term));
     });
     return rows.sort((a, b) => {
@@ -193,6 +211,7 @@
   }
 
   function labelFor(column) {
+    if (copy[state.dataset].columnLabels?.[column.key]) return column.label;
     if (state.dataset === "farming" && column.key === "name") return "Crop";
     if (state.dataset === "farming" && column.key === "sourceUrl") return "Crop wiki";
     if (["eggs", "milk"].includes(state.dataset) && column.key === "name") return "Animal";
@@ -349,7 +368,8 @@
     $("#table-title").textContent = data.name;
     $("#search").value = current.query;
     $("#search").placeholder = words.placeholder;
-    $("#category-label").textContent = words.category;
+    $("#category").closest("label").hidden = words.category === null;
+    $("#category-label").textContent = words.category || "";
     const options = [new Option(words.categoryAll, "")];
     const categories = [...new Set(data.rows.map((row) => row[data.categoryKey]).filter((value) => !isBlank(value)))];
     for (const value of categories) options.push(new Option(value, value));
@@ -373,14 +393,15 @@
     $("#detail-title").textContent = row.name;
     $("#detail-category").textContent = `${data.name.toUpperCase()} / ${row[data.categoryKey] ?? ""}`;
     const fragment = document.createDocumentFragment();
-    for (const column of data.columns) {
+    for (const column of activeColumns()) {
       const wrapper = document.createElement("div");
       wrapper.className = "detail-row";
       const term = document.createElement("dt");
       term.textContent = column.label;
       const detail = document.createElement("dd");
-      appendValue(detail, row[column.key], column);
-      if (isBlank(row[column.key])) detail.className = "missing";
+      const value = fieldValue(row, column.key);
+      appendValue(detail, value, column);
+      if (isBlank(value)) detail.className = "missing";
       wrapper.append(term, detail);
       fragment.append(wrapper);
     }
@@ -412,7 +433,8 @@
   function exportCsv() {
     const data = activeData();
     const rows = visibleRows();
-    const matrix = [data.columns.map((column) => column.label), ...rows.map((row) => data.columns.map((column) => row[column.key]))];
+    const columns = activeColumns();
+    const matrix = [columns.map((column) => column.label), ...rows.map((row) => columns.map((column) => fieldValue(row, column.key)))];
     const csv = "\uFEFF" + matrix.map((row) => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
     const anchor = document.createElement("a");

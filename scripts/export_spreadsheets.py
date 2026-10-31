@@ -72,7 +72,7 @@ SCHEMAS = {
 
 EGG_SCHEMA = {
     "file": "rimworld_egg_laying_animals_comparison.csv",
-    "name": "Egg-laying animals",
+    "name": "Eggs",
     "nameKey": "name",
     "categoryKey": "diet",
     "columns": [
@@ -99,9 +99,9 @@ EGG_SCHEMA = {
 
 MILK_SCHEMA = {
     "file": "rimworld_milk_producing_animals_comparison.csv",
-    "name": "Milk-producing animals",
+    "name": "Milk",
     "nameKey": "name",
-    "categoryKey": "packAnimal",
+    "categoryKey": "diet",
     "columns": [
         ("name", "Animal", "text"),
         ("content", "Content", "text"),

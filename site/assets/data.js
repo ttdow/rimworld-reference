@@ -2138,7 +2138,7 @@ window.RIMWORLD_DATA = {
       ]
     },
     "eggs": {
-      "name": "Egg-laying animals",
+      "name": "Eggs",
       "nameKey": "name",
       "categoryKey": "diet",
       "source": {
@@ -2717,9 +2717,9 @@ window.RIMWORLD_DATA = {
       ]
     },
     "milk": {
-      "name": "Milk-producing animals",
+      "name": "Milk",
       "nameKey": "name",
-      "categoryKey": "packAnimal",
+      "categoryKey": "diet",
       "source": {
         "file": "rimworld_milk_producing_animals_comparison.csv",
         "format": "csv",

@@ -4,11 +4,11 @@ A static GitHub Pages reference for apparel, textiles, egg-laying animals, milk-
 
 Live site: https://ttdow.github.io/rimworld-reference/
 
-The page has searchable, sortable tables, category filters, focused column views, every original column, item details, a light/dark theme, and CSV export of the filtered records. Searches cover every field, including fields outside the selected column view. Empty source cells remain empty; no material or quality calculations are added. The egg-laying animals table also filters by game content and male requirements. The milk-producing animals table filters by pack-animal and caravan-mount roles, with focused views for milk/feed and climate/caravans. Both retain the supplied production and feed-efficiency estimates with clickable wiki sources.
+The page has searchable, sortable tables, category filters, focused column views, item details, a light/dark theme, and CSV export of the filtered records. Searches cover included fields beyond the selected column view. Empty source cells remain empty; no material or quality calculations are added. Eggs filters by game content and male requirements, with the Content column omitted. Milk has views for milk/feed and climate; pack-animal and caravan fields are excluded from views, details, and filtered exports. Both retain the supplied production and feed-efficiency estimates with clickable wiki sources. Original source downloads remain intact.
 
 Link directly to the animals tables with `https://ttdow.github.io/rimworld-reference/#eggs` or `https://ttdow.github.io/rimworld-reference/#milk`.
 
-The [Farming table](https://ttdow.github.io/rimworld-reference/#farming) retains all source fields from `rimworld_raw_food_crop_productivity_revised.csv`, with views for 70%, 100%, 140%, and 280% fertility, harvest/labour details, food filtering, and CSV export. Harvested food is omitted from table views. Supplied values and blanks are retained; productivity is not recalculated.
+The [Farming table](https://ttdow.github.io/rimworld-reference/#farming) retains all source fields from `rimworld_raw_food_crop_productivity_revised.csv`, with views for 70%, 100%, and 140% fertility, Hydroponics, harvest/labour details, food filtering, and CSV export. Harvested food is omitted from table views. Hydroponics uses the source's 280% fertility values. Supplied values and blanks are retained; productivity is not recalculated.
 
 ## Melee lab
 
