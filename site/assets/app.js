@@ -69,10 +69,10 @@
       ...[100, 70, 140, 280].map(fertility => ({
         id: fertility === 100 ? "overview" : `fertility-${fertility}`,
         label: `${fertility}% fertility`,
-        keys: ["name", "food", `growDays${fertility}`, `nutritionDay${fertility}`, `labourDay${fertility}`, "nutritionPerPawnHour"],
+        keys: ["name", `growDays${fertility}`, `nutritionDay${fertility}`, `labourDay${fertility}`, "nutritionPerPawnHour"],
       })),
-      { id: "harvest", label: "Harvest & labour", keys: ["name", "food", "displayedGrowDays", "harvestUnits", "foodNutrition", "harvestNutrition", "fertilitySensitivity", "sowingLabour", "harvestLabour", "totalLabour", "nutritionPerPawnHour"] },
-      { id: "all", label: "All columns", keys: datasets.farming.columns.map(column => column.key) },
+      { id: "harvest", label: "Harvest & labour", keys: ["name", "displayedGrowDays", "harvestUnits", "foodNutrition", "harvestNutrition", "fertilitySensitivity", "sowingLabour", "harvestLabour", "totalLabour", "nutritionPerPawnHour"] },
+      { id: "all", label: "All columns", keys: datasets.farming.columns.map(column => column.key).filter(key => key !== "food") },
     ],
   };
   const shortLabels = {

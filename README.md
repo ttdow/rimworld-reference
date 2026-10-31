@@ -8,7 +8,7 @@ The page has searchable, sortable tables, category filters, focused column views
 
 Link directly to the animals tables with `https://ttdow.github.io/rimworld-reference/#eggs` or `https://ttdow.github.io/rimworld-reference/#milk`.
 
-The [Farming table](https://ttdow.github.io/rimworld-reference/#farming) preserves all 24 columns from `rimworld_raw_food_crop_productivity_revised.csv`, with views for 70%, 100%, 140%, and 280% fertility, harvest/labour details, food filtering, and CSV export. Supplied values and blanks are retained; productivity is not recalculated.
+The [Farming table](https://ttdow.github.io/rimworld-reference/#farming) retains all source fields from `rimworld_raw_food_crop_productivity_revised.csv`, with views for 70%, 100%, 140%, and 280% fertility, harvest/labour details, food filtering, and CSV export. Harvested food is omitted from table views. Supplied values and blanks are retained; productivity is not recalculated.
 
 ## Melee lab
 
